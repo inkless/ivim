@@ -176,12 +176,13 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'ludovicchabant/vim-gutentags' " Manage tag files
     Plug 'AndrewRadev/splitjoin.vim' " Splitjoin
     Plug 'sickill/vim-pasta' " Vim pasta
-    Plug 'Keithbsmiley/investigate.vim' " Helper
+    " Plug 'Keithbsmiley/investigate.vim' " Helper
     Plug 'wikitopian/hardmode' " Hard mode
     Plug 'wellle/targets.vim' " Text objects
     Plug 'roman/golden-ratio' " Resize windows
     Plug 'chrisbra/vim-diff-enhanced' " Create better diffs
     Plug 'mhinz/vim-hugefile' " Largefile
+    Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
     " Plug 'amiorin/vim-project' " Project
 endif
 
@@ -199,6 +200,7 @@ if count(g:ivim_bundle_groups, 'navigate') " Navigation
     Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERD tree git plugin
     Plug 'mhinz/vim-tmuxify' " Tmux panes
     Plug 'ctrlpvim/ctrlp.vim' " Ctrl P Search
+    Plug 'mileszs/ack.vim' " ack
 endif
 
 if count(g:ivim_bundle_groups, 'complete') " Completion
@@ -458,6 +460,8 @@ cnoremap s/ s/\v
 nnoremap ? ?\v
 vnoremap ? ?\v
 cnoremap s? s?\v
+cnoremap %s/ %smagic/
+cnoremap \>s/ \>smagic/
 
 " Keep search matches in the middle of the window
 nnoremap n nzzzv
@@ -676,11 +680,15 @@ if count(g:ivim_bundle_groups, 'enhance')
     let g:splitjoin_align=1
 
     " -> Investigate.vim
-    nnoremap K :call investigate#Investigate()<CR>
-    let g:investigate_use_dash=1
+    " nnoremap K :call investigate#Investigate()<CR>
+    " let g:investigate_use_dash=1
 
     " -> EnhancedDiff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+
+    if has('gui_running')
+        set macmeta
+    endif
 
 endif
 
@@ -722,9 +730,24 @@ if count(g:ivim_bundle_groups, 'navigate')
     augroup END
 
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+    set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
-    " let g:ctrlp_by_filename = 1
+
+    if executable('ag')
+        " Use ag over grep
+        " set grepprg=ag\ --nogroup\ --nocolor\ --column
+        " set grepformat=%f:%l:%c%m
+        let g:ackprg = 'ag --vimgrep'
+
+        nnoremap K :Ack "\b<C-R><C-W>\b"<CR>
+
+        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+        " ag is fast enough that CtrlP doesn't need to cache
+        let g:ctrlp_use_caching = 0
+    endif
 
 endif
 
