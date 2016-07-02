@@ -451,7 +451,7 @@ set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uc present
 set hlsearch " Highlight search terms
 set incsearch " Find as you type search
-set gdefault " turn on g flag
+" set gdefault " turn on g flag
 
 " Use sane regexes
 nnoremap / /\v
