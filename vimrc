@@ -5,10 +5,10 @@
 "    / /| |/ / / / / / / /
 "   /_/ |___/_/_/ /_/ /_/
 "
-"   Main Contributor: Xiao-Ou Zhang (kepbod) <kepbod@gmail.com>
+"   Main Contributor: Guangda Zhang (inkless) <zhangxiaoyu9350@gmail.com>
 "   Version: 2.5
 "   Created: 2012-01-20
-"   Last Modified: 2016-06-22
+"   Last Modified: 2016-07-01
 "
 "   Sections:
 "     -> ivim Setting
@@ -34,9 +34,10 @@
 "------------------------------------------------
 
 " ivim user setting
-let g:ivim_user='Xiao-Ou Zhang' " User name
-let g:ivim_email='kepbod@gmail.com' " User email
-let g:ivim_github='https://github.com/kepbod' " User github
+let g:ivim_user='Guangda Zhang' " User name
+let g:ivim_email='zhangxiaoyu9350@gmail.com' " User email
+let g:ivim_github='https://github.com/inkless' " User github
+
 " ivim color settings (hybrid, gruvbox or tender)
 let g:ivim_default_scheme='hybrid'
 " ivim ui setting
@@ -118,6 +119,9 @@ autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cu
 set noerrorbells
 set novisualbell
 set t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -148,7 +152,7 @@ endif
 call plug#begin('~/.vim/bundle')
 
 if count(g:ivim_bundle_groups, 'ui') " UI setting
-    Plug 'kepbod/vim-hybrid' " Colorscheme hybrid
+    Plug 'w0ng/vim-hybrid' " Colorscheme hybrid
     Plug 'morhetz/gruvbox' " Colorscheme gruvbox
     Plug 'jacoborus/tender.vim' " Colorscheme tender
     Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' " Status line
@@ -177,6 +181,8 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'wellle/targets.vim' " Text objects
     Plug 'roman/golden-ratio' " Resize windows
     Plug 'chrisbra/vim-diff-enhanced' " Create better diffs
+    Plug 'mhinz/vim-hugefile' " Largefile
+    " Plug 'amiorin/vim-project' " Project
 endif
 
 if count(g:ivim_bundle_groups, 'move') " Moving
@@ -186,14 +192,13 @@ if count(g:ivim_bundle_groups, 'move') " Moving
     Plug 'bkad/CamelCaseMotion' " Camel case motion
     Plug 'majutsushi/tagbar' " Tag bar
     Plug 'edsono/vim-matchit' " Match it
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  } " Fuzzy finder
-    Plug 'junegunn/fzf.vim' " Fuzzy finder plugin
 endif
 
 if count(g:ivim_bundle_groups, 'navigate') " Navigation
     Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " NERD tree
     Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERD tree git plugin
     Plug 'mhinz/vim-tmuxify' " Tmux panes
+    Plug 'ctrlpvim/ctrlp.vim' " Ctrl P Search
 endif
 
 if count(g:ivim_bundle_groups, 'complete') " Completion
@@ -237,6 +242,11 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] } " Emmet
     Plug 'LaTeX-Box-Team/LaTeX-Box' " LaTex
     Plug 'sheerun/vim-polyglot' " Language Support
+    Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
+    Plug 'greyblake/vim-preview' " vim preview
+    Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
+    Plug 'pangloss/vim-javascript' " JavaScript
+    Plug 'rust-lang/rust.vim' " Rust
 endif
 
 if filereadable(expand($HOME . '/.vimrc.bundles.local')) " Load local bundles
@@ -404,10 +414,15 @@ endif
 " Set GUI font
 if has('gui_running')
     if has('gui_gtk')
-        set guifont=DejaVu\ Sans\ Mono\ 18
+        " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono\ 14
+        " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
+        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono\ 12
     else
-        set guifont=DejaVu\ Sans\ Mono:h18
+        " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono:h14
+        " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
+        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono:h12
     endif
+    set linespace=2
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -419,8 +434,9 @@ endif
 set autoindent " Preserve current indent on new lines
 set cindent " set C style indent
 set expandtab " Convert all tabs typed to spaces
-set softtabstop=4 " Indentation levels every four columns
-set shiftwidth=4 " Indent/outdent by four columns
+set tabstop=2
+set softtabstop=2 " Indentation levels every four columns
+set shiftwidth=2 " Indent/outdent by four columns
 set shiftround " Indent/outdent to nearest tabstop
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -555,7 +571,7 @@ if count(g:ivim_bundle_groups, 'ui')
                 \'    / /| |/ / / / / / / /',
                 \'   /_/ |___/_/_/ /_/ /_/ ',
                 \'                         ']
-    let g:startify_custom_footer=['', '    This configuration is maintained by Xiao-Ou Zhang <kepbod@gmail.com> and other contributors. Thanks!']
+    let g:startify_custom_footer=['', '    This configuration is maintained by Zhang Guangda <zhangxiaoyu9350@gmail.com> and other contributors. Thanks!']
     if has('gui_running')
         hi StartifyHeader  guifg=#87afff
         hi StartifyFooter  guifg=#87afff
@@ -571,6 +587,29 @@ if count(g:ivim_bundle_groups, 'ui')
         hi StartifyPath    ctermfg=245
         hi StartifySlash   ctermfg=240
     endif
+
+    let g:startify_bookmarks=[
+    \'/Users/joe/Codes/spsites/main/src/main/webapp/static',
+    \'/Users/joe/Codes/spsites/main/src/test/js/unit',
+    \'/Users/joe/Codes/ansible-playbook',
+    \'/Users/joe/Codes/sptools',
+    \'/Users/joe/Codes/jenkins-proxy',
+    \'/Users/joe/Codes/bs-debug',
+    \'/Users/joe/Codes/speedcurve',
+    \'/Users/joe/Codes/metrics-scripts',
+    \'/Users/joe/Codes/speedtest',
+    \'/Users/joe/Codes/node-db-migrator',
+    \'/Users/joe/Codes/lebab-sublime',
+    \'/Users/joe/Codes/es6-fe-boilerplate',
+    \'/Users/joe/Codes/www.vispar.com',
+    \'/Users/joe/Codes/www.hkapply.com',
+    \'/Users/joe/Codes/rust',
+    \'/Users/joe/Codes/local/npm_test',
+    \'/Users/joe/Github/dragger',
+    \'/Users/joe/Github/only-loader',
+    \'/Users/joe/Github/react',
+    \'/Users/joe/Github/redux',
+    \]
 
     " -> Goyo & Limelight
     autocmd! User GoyoEnter Limelight
@@ -666,7 +705,8 @@ endif
 if count(g:ivim_bundle_groups, 'navigate')
 
     " -> NERD Tree
-    nnoremap <Leader>f :NERDTreeToggle<CR>
+    nnoremap <Leader>d :NERDTreeToggle<CR>
+    nnoremap <Leader>f :NERDTreeFind<CR>
     let NERDTreeChDirMode=2
     let NERDTreeShowBookmarks=1
     let NERDTreeShowHidden=1
@@ -680,6 +720,11 @@ if count(g:ivim_bundle_groups, 'navigate')
                     \|   execute 'autocmd! nerd_loader'
                     \| endif
     augroup END
+
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+    let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
+    " let g:ctrlp_by_filename = 1
 
 endif
 
@@ -759,7 +804,8 @@ endif
 if count(g:ivim_bundle_groups, 'compile')
 
     " -> Syntastic
-    let g:syntastic_check_on_open=1
+    let g:syntastic_check_on_open=0
+    let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['html', 'hbs'] }
     let g:syntastic_aggregate_errors=1
     let g:syntastic_auto_jump=1
     let g:syntastic_auto_loc_list=1
@@ -788,7 +834,60 @@ if count(g:ivim_bundle_groups, 'language')
     let g:user_emmet_settings={'indentation':'    '}
     let g:use_emmet_complete_tag=1
 
+    " -> jsdoc.vim
+    nmap <silent> <C-m> <Plug>(jsdoc)
+
 endif
+
+"--------------------------------------------------
+" => Project Setting
+"--------------------------------------------------
+
+" User nerd tree
+" let g:project_use_nerdtree = 1
+"
+" set rtp+=~/.vim/bundle/vim-project/
+" call project#rc("/Users/joe/Codes")
+"
+" Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
+" Callback    'spsites-static'                      , 'SetJscs'
+" Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
+" Callback    'spsites-unit'                      , 'SetJscs'
+"
+" function! SetJscs(...) abort
+"   let g:syntastic_javascript_checkers=['jscs']
+" endfunction
+"
+" Project     'ansible-playbook'
+" Project     'sptools'
+"
+" Project     'jenkins-proxy'
+" Project     'bs-debug'
+" Project     'speedcurve'
+" Project     'metrics-scripts'
+" Project     'speedtest'
+"
+" Project     'node-db-migrator'
+" Project     'es6-fe-boilerplate'
+" Project     'lebab-sublime'
+"
+" Project     'www.vispar.com'
+" Project     'www.hkapply.com'
+"
+" Project     'rust'
+"
+" " local project
+" call project#rc("/Users/joe/Codes/local")
+" Project     'npm_test'
+"
+" " Some github projects
+" call project#rc("/Users/joe/Github")
+"
+" Project     'dragger'
+" Project     'only-loader'
+" Project     'react'
+" Project     'redux'
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
