@@ -690,6 +690,8 @@ if count(g:ivim_bundle_groups, 'enhance')
         set macmeta
     endif
 
+    set clipboard=unnamed
+
 endif
 
 " setting for moving plugins
