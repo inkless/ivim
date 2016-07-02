@@ -184,6 +184,8 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'mhinz/vim-hugefile' " Largefile
     Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
     " Plug 'amiorin/vim-project' " Project
+    Plug 'ap/vim-css-color' " hmm
+    Plug 'KabbAmine/vCoolor.vim' " Color Picker
 endif
 
 if count(g:ivim_bundle_groups, 'move') " Moving
@@ -686,11 +688,23 @@ if count(g:ivim_bundle_groups, 'enhance')
     " -> EnhancedDiff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
 
+    " shortcut for diffget
+    map <silent> <leader>2 :diffget 2<CR>
+    map <silent> <leader>3 :diffget 3<CR>
+    map <silent> <leader>4 :diffget 4<CR>
+
     if has('gui_running')
         set macmeta
     endif
 
     set clipboard=unnamed
+
+    let g:golden_ratio_autocommand = 0
+
+    nnoremap <silent> <Leader>0 :exe "resize " . (winheight(0) * 3/2)<CR>
+    nnoremap <silent> <Leader>9 :exe "resize " . (winheight(0) * 2/3)<CR>
+    nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+    nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 
 endif
 
@@ -855,7 +869,7 @@ endif
 if count(g:ivim_bundle_groups, 'language')
 
     " -> Emmet
-    let g:user_emmet_leader_key='<C-Z>'
+    let g:user_emmet_leader_key='<C-E>'
     let g:user_emmet_settings={'indentation':'    '}
     let g:use_emmet_complete_tag=1
 
