@@ -44,7 +44,7 @@ let g:ivim_default_scheme='hybrid'
 let g:ivim_fancy_font=1 " Enable using fancy font
 let g:ivim_show_number=1 " Enable showing number
 " ivim autocomplete setting (YCM or NEO)
-let g:ivim_autocomplete='NEO'
+let g:ivim_autocomplete='YCM'
 " ivim plugin setting
 let g:ivim_bundle_groups=['ui', 'enhance', 'move', 'navigate',
             \'complete', 'compile', 'git', 'language']
@@ -220,7 +220,8 @@ if count(g:ivim_bundle_groups, 'complete') " Completion
     else
         " Auto completion framework
         let g:ivim_completion_engine='YouCompleteMe'
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py' } "Auto completion framework
+        " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' } "Auto completion framework
+        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer --racer-completer --clang-completer' } "Auto completion framework
         Plug 'honza/vim-snippets' " Snippets
         Plug 'sirver/ultisnips' " Snippet engine
     endif
@@ -249,7 +250,9 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
     Plug 'greyblake/vim-preview' " vim preview
     Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
-    Plug 'pangloss/vim-javascript' " JavaScript
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } " JavaScript
+    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] } " JSX
+    Plug 'maksimr/vim-jsbeautify' " javascript format
     Plug 'rust-lang/rust.vim' " Rust
 endif
 
@@ -706,6 +709,8 @@ if count(g:ivim_bundle_groups, 'enhance')
     nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
     nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 
+    " set foldmethod=syntax " allow fold code
+
 endif
 
 " setting for moving plugins
@@ -717,6 +722,30 @@ if count(g:ivim_bundle_groups, 'move')
     let g:tagbar_expand=1
     let g:tagbar_foldlevel=2
     let g:tagbar_autoshowtag=1
+
+    let g:tagbar_type_css = {
+      \ 'ctagstype' : 'Css',
+      \ 'kinds'     : [
+      \ 'c:classes',
+      \ 's:selectors',
+      \ 'i:identities'
+      \ ]
+    \ }
+
+
+    let g:tagbar_type_rust = {
+        \ 'ctagstype' : 'rust',
+        \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits,traits',
+        \'i:impls,trait implementations',
+        \]
+    \}
 
     " Matchit
     " Use Tab instead of % to switch
@@ -826,16 +855,24 @@ if count(g:ivim_bundle_groups, 'complete')
             set conceallevel=2 concealcursor=i
         endif
     else
+        " -> rustc
+        let g:ycm_rust_src_path = '/usr/local/lib/rust/rustc-1.9.0/src'
+        " -> python
+        let g:ycm_python_binary_path = 'python'
+
         " -> UltiSnips
         let g:UltiSnipsExpandTrigger="<C-K>"
         let g:UltiSnipsJumpForwardTrigger="<Tab>"
         let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+
+        nnoremap <leader>jd :YcmCompleter GoTo<CR>
     endif
 
     " Setting info for snips
     let g:snips_author=g:ivim_user
     let g:snips_email=g:ivim_email
     let g:snips_github=g:ivim_github
+
 
 endif
 
@@ -873,8 +910,27 @@ if count(g:ivim_bundle_groups, 'language')
     let g:user_emmet_settings={'indentation':'    '}
     let g:use_emmet_complete_tag=1
 
+    " -> rust
+    " let g:rustfmt_autosave = 1
+
     " -> jsdoc.vim
     nmap <silent> <C-m> <Plug>(jsdoc)
+
+    " -> JS beautify
+    function! Beautify()
+        if &filetype == "javascript"
+            call JsBeautify()
+        elseif &filetype == "jsx"
+            call JsxBeautify()
+        elseif &filetype == "html"
+            call HtmlBeautify()
+        elseif &filetype == "css"
+            call CSSBeautify()
+        elseif &filetype == "json"
+            call JsonBeautify()
+        endif
+    endfunction
+    command! -nargs=0 Beautify call Beautify()
 
 endif
 
