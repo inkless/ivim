@@ -892,6 +892,8 @@ if count(g:ivim_bundle_groups, 'compile')
         let g:syntastic_style_warning_symbol = '≈'
     endif
 
+    let g:syntastic_javascript_checkers = ['flowplusjshint']
+
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
     let g:SingleCompile_showquickfixiferror=1
@@ -1003,3 +1005,5 @@ if has('gui_running')
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" vim: set sw=4 sts=4 et fdm=marker:
