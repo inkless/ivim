@@ -182,9 +182,10 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'roman/golden-ratio' " Resize windows
     Plug 'chrisbra/vim-diff-enhanced' " Create better diffs
     Plug 'mhinz/vim-hugefile' " Largefile
-    Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
+    " Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
+    Plug 'vim-scripts/YankRing.vim' "yank history for vim
     " Plug 'amiorin/vim-project' " Project
-    Plug 'ap/vim-css-color' " hmm
+    Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss'] } " hmm
     Plug 'KabbAmine/vCoolor.vim' " Color Picker
 endif
 
@@ -400,6 +401,7 @@ endif
 "-------------------------------------------------
 
 syntax on " Enable syntax
+set synmaxcol=150
 set background=dark " Set background
 if !has('gui_running')
     set t_Co=256 " Use 256 colors
@@ -708,6 +710,8 @@ if count(g:ivim_bundle_groups, 'enhance')
     nnoremap <silent> <Leader>9 :exe "resize " . (winheight(0) * 2/3)<CR>
     nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
     nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+
+    nnoremap <silent> <F11> :YRShow<CR>
 
     " set foldmethod=syntax " allow fold code
 
