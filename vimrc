@@ -184,7 +184,7 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'mhinz/vim-hugefile' " Largefile
     " Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
     Plug 'vim-scripts/YankRing.vim' "yank history for vim
-    " Plug 'amiorin/vim-project' " Project
+    Plug 'amiorin/vim-project' " Project
     Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss'] } " hmm
     Plug 'KabbAmine/vCoolor.vim' " Color Picker
 endif
@@ -599,29 +599,6 @@ if count(g:ivim_bundle_groups, 'ui')
         hi StartifySlash   ctermfg=240
     endif
 
-    let g:startify_bookmarks=[
-    \'/Users/joe/Codes/spsites/main/src/main/webapp/static',
-    \'/Users/joe/Codes/spsites/main/src/test/js/unit',
-    \'/Users/joe/Codes/ansible-playbook',
-    \'/Users/joe/Codes/sptools',
-    \'/Users/joe/Codes/jenkins-proxy',
-    \'/Users/joe/Codes/bs-debug',
-    \'/Users/joe/Codes/speedcurve',
-    \'/Users/joe/Codes/metrics-scripts',
-    \'/Users/joe/Codes/speedtest',
-    \'/Users/joe/Codes/node-db-migrator',
-    \'/Users/joe/Codes/lebab-sublime',
-    \'/Users/joe/Codes/es6-fe-boilerplate',
-    \'/Users/joe/Codes/www.vispar.com',
-    \'/Users/joe/Codes/www.hkapply.com',
-    \'/Users/joe/Codes/rust',
-    \'/Users/joe/Codes/local/npm_test',
-    \'/Users/joe/Github/dragger',
-    \'/Users/joe/Github/only-loader',
-    \'/Users/joe/Github/react',
-    \'/Users/joe/Github/redux',
-    \]
-
     " -> Goyo & Limelight
     autocmd! User GoyoEnter Limelight
     autocmd! User GoyoLeave Limelight!
@@ -753,8 +730,8 @@ if count(g:ivim_bundle_groups, 'move')
 
     " Matchit
     " Use Tab instead of % to switch
-    nmap <Tab> %
-    vmap <Tab> %
+    " nmap <Tab> %
+    " vmap <Tab> %
 
 endif
 
@@ -796,6 +773,7 @@ if count(g:ivim_bundle_groups, 'navigate')
 
         " ag is fast enough that CtrlP doesn't need to cache
         let g:ctrlp_use_caching = 0
+        " let g:ctrlp_working_path_mode = "ra"
         let g:ctrlp_working_path_mode = 0
     endif
 
@@ -946,49 +924,75 @@ endif
 "--------------------------------------------------
 
 " User nerd tree
-" let g:project_use_nerdtree = 1
-"
-" set rtp+=~/.vim/bundle/vim-project/
-" call project#rc("/Users/joe/Codes")
-"
-" Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
-" Callback    'spsites-static'                      , 'SetJscs'
-" Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
-" Callback    'spsites-unit'                      , 'SetJscs'
-"
-" function! SetJscs(...) abort
-"   let g:syntastic_javascript_checkers=['jscs']
-" endfunction
-"
-" Project     'ansible-playbook'
-" Project     'sptools'
-"
-" Project     'jenkins-proxy'
-" Project     'bs-debug'
-" Project     'speedcurve'
-" Project     'metrics-scripts'
-" Project     'speedtest'
-"
-" Project     'node-db-migrator'
-" Project     'es6-fe-boilerplate'
-" Project     'lebab-sublime'
-"
-" Project     'www.vispar.com'
-" Project     'www.hkapply.com'
-"
-" Project     'rust'
-"
-" " local project
-" call project#rc("/Users/joe/Codes/local")
-" Project     'npm_test'
-"
-" " Some github projects
-" call project#rc("/Users/joe/Github")
-"
-" Project     'dragger'
-" Project     'only-loader'
-" Project     'react'
-" Project     'redux'
+let g:project_enable_welcome=0
+let g:project_use_nerdtree = 1
+
+set rtp+=~/.vim/bundle/vim-project/
+call project#rc("/Users/joe/Codes")
+
+Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
+Callback    'spsites-static'                      , 'SetJscs'
+Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
+Callback    'spsites-unit'                      , 'SetJscs'
+
+function! SetJscs(...) abort
+  let g:syntastic_javascript_checkers=['jscs']
+endfunction
+
+Project     'ansible-playbook'
+Project     'sptools'
+
+Project     'jenkins-proxy'
+Project     'bs-debug'
+Project     'speedcurve'
+Project     'metrics-scripts'
+Project     'speedtest'
+
+Project     'node-db-migrator'
+Project     'es6-fe-boilerplate'
+Project     'lebab-sublime'
+
+Project     'www.vispar.com'
+Project     'www.hkapply.com'
+
+Project     'rust'
+
+" local project
+call project#rc("/Users/joe/Codes/local")
+Project     'npm_test'
+
+" Some github projects
+call project#rc("/Users/joe/Github")
+
+Project     'dragger'
+Project     'only-loader'
+Project     'react'
+Project     'redux'
+
+" we are not using vim-project's welcome page
+" so we have to define in Startify again
+let g:startify_bookmarks=[
+\'/Users/joe/Codes/spsites/main/src/main/webapp/static',
+\'/Users/joe/Codes/spsites/main/src/test/js/unit',
+\'/Users/joe/Codes/ansible-playbook',
+\'/Users/joe/Codes/sptools',
+\'/Users/joe/Codes/jenkins-proxy',
+\'/Users/joe/Codes/bs-debug',
+\'/Users/joe/Codes/speedcurve',
+\'/Users/joe/Codes/metrics-scripts',
+\'/Users/joe/Codes/speedtest',
+\'/Users/joe/Codes/node-db-migrator',
+\'/Users/joe/Codes/lebab-sublime',
+\'/Users/joe/Codes/es6-fe-boilerplate',
+\'/Users/joe/Codes/www.vispar.com',
+\'/Users/joe/Codes/www.hkapply.com',
+\'/Users/joe/Codes/rust',
+\'/Users/joe/Codes/local/npm_test',
+\'/Users/joe/Github/dragger',
+\'/Users/joe/Github/only-loader',
+\'/Users/joe/Github/react',
+\'/Users/joe/Github/redux',
+\]
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
