@@ -112,8 +112,8 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 
-autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
-autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
+" autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
+" autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
 
 " No sound on errors
 set noerrorbells
@@ -245,7 +245,7 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
     Plug 'fatih/vim-go', { 'for': 'go' } " Golang
     Plug 'tpope/vim-rails', { 'for': [] } " Rails
-    Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] } " Emmet
+    Plug 'mattn/emmet-vim' " Emmet
     Plug 'LaTeX-Box-Team/LaTeX-Box' " LaTex
     Plug 'sheerun/vim-polyglot' " Language Support
     Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
@@ -335,8 +335,10 @@ if count(g:ivim_bundle_groups, 'ui')
         let g:airline_theme='tender'
     endif
     set ttimeoutlen=50
-    let g:bufferline_echo=0
+    " let g:bufferline_echo=0
+
     let g:bufferline_modified='[+]'
+    let g:airline#extensions#tabline#enabled = 1
     if g:ivim_fancy_font
         let g:airline_powerline_fonts=1
     else
