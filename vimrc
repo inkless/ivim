@@ -883,6 +883,13 @@ if count(g:ivim_bundle_groups, 'compile')
     nnoremap <Leader>r :SingleCompileRun<CR>
     let g:SingleCompile_showquickfixiferror=1
 
+    call SingleCompile#SetCompilerTemplate('markdown', 'pandoc',
+                \ 'Discount Markdown Processor for Pandoc', 'pandoc',
+                \ '-f markdown_github $(FILE_NAME)$ >$(FILE_TITLE)$.html',
+                \ SingleCompile#GetDefaultOpenCommand() .
+                \ ' "$(FILE_TITLE)$.html"')
+    call SingleCompile#ChooseCompiler('markdown', 'pandoc')
+
 endif
 
 " Setting for git plugins
