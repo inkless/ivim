@@ -157,7 +157,9 @@ if count(g:ivim_bundle_groups, 'ui') " UI setting
     Plug 'jacoborus/tender.vim' " Colorscheme tender
     Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' " Status line
     Plug 'ryanoasis/vim-devicons' " Devicons
-    Plug 'bling/vim-bufferline' " Buffer line
+    " Plug 'bling/vim-bufferline' " Buffer line
+    " Plug 'fholgado/minibufexpl.vim' " mini buffer explorer
+    " Plug 'jeetsukumaran/vim-buffergator' " Vim plugin to list, select and switch between buffers.
     Plug 'mhinz/vim-startify' " Start page
     Plug 'junegunn/goyo.vim', { 'for': 'markdown' } " Distraction-free
     Plug 'junegunn/limelight.vim', { 'for': 'markdown' } " Hyperfocus-writing
@@ -334,11 +336,14 @@ if count(g:ivim_bundle_groups, 'ui')
         let g:tender_airline=1
         let g:airline_theme='tender'
     endif
-    set ttimeoutlen=50
-    " let g:bufferline_echo=0
+    set ttimeoutlen=10
 
+    let g:bufferline_echo=0
     let g:bufferline_modified='[+]'
+
     let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#fnamemod = ':t'
+
     if g:ivim_fancy_font
         let g:airline_powerline_fonts=1
     else
@@ -392,8 +397,10 @@ endif
 
 " Set gVim UI setting
 if has('gui_running')
-    set guioptions-=m
-    set guioptions-=T
+    set guioptions-=m "remove menu
+    set guioptions-=T "remove toolbar
+    set guioptions-=r "remove right-hand scroll bar
+    set guioptions-=L "remove left-hand scroll bar
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -458,7 +465,7 @@ set shiftround " Indent/outdent to nearest tabstop
 
 set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uc present
-set hlsearch " Highlight search terms
+set nohlsearch " Highlight search terms
 set incsearch " Find as you type search
 " set gdefault " turn on g flag
 
@@ -566,6 +573,13 @@ nnoremap \= gg=G
 command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
             \ | diffthis | wincmd p | diffthis
 
+" buffer explorer
+nnoremap <leader>b :ls<cr>:b<space>
+
+" new tab
+nnoremap <leader>T :tabnew<cr>
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "--------------------------------------------------
@@ -650,6 +664,9 @@ if count(g:ivim_bundle_groups, 'enhance')
             endif
         endfunction
     endif
+
+    " allow maintain cursor after exit
+    let g:multi_cursor_exit_from_insert_mode=0
 
     " -> Undo tree
     nnoremap <Leader>u :UndotreeToggle<CR>
@@ -877,10 +894,12 @@ if count(g:ivim_bundle_groups, 'compile')
         let g:syntastic_style_warning_symbol = '≈'
     endif
 
-    let g:syntastic_javascript_checkers = ['flowplusjshint']
+    " let g:syntastic_javascript_checkers = ['flowplusjshint']
+    let g:syntastic_javascript_checkers = ['eslint']
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
+    nnoremap <Leader>B :SingleCompile<CR>
     let g:SingleCompile_showquickfixiferror=1
 
     call SingleCompile#SetCompilerTemplate('markdown', 'pandoc',
@@ -940,14 +959,10 @@ set rtp+=~/.vim/bundle/vim-project/
 call project#rc("/Users/joe/Codes")
 
 Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
-Callback    'spsites-static'                      , 'SetJscs'
 Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
-Callback    'spsites-unit'                      , 'SetJscs'
 
-function! SetJscs(...) abort
-  let g:syntastic_javascript_checkers=['jscs']
-endfunction
-
+Project     'tile-engine'
+Project     'tile-engine-cli'
 Project     'ansible-playbook'
 Project     'sptools'
 
@@ -983,6 +998,8 @@ Project     'redux'
 let g:startify_bookmarks=[
 \'/Users/joe/Codes/spsites/main/src/main/webapp/static',
 \'/Users/joe/Codes/spsites/main/src/test/js/unit',
+\'/Users/joe/Codes/tile-engine',
+\'/Users/joe/Codes/tile-engine-cli',
 \'/Users/joe/Codes/ansible-playbook',
 \'/Users/joe/Codes/sptools',
 \'/Users/joe/Codes/jenkins-proxy',
