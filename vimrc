@@ -60,7 +60,10 @@ endif
 " => General
 "------------------------------------------------
 
-set nocompatible " Get out of vi compatible mode
+" nvim
+if !has('nvim')
+    set nocompatible " Get out of vi compatible mode
+endif
 filetype plugin indent on " Enable filetype
 let mapleader=',' " Change the mapleader
 let maplocalleader='\' " Change the maplocalleader
@@ -175,7 +178,7 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " Undo tree
     Plug 'tpope/vim-surround' " Surround
     Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] } " Easy align
-    Plug 'ludovicchabant/vim-gutentags' " Manage tag files
+    " Plug 'ludovicchabant/vim-gutentags' " Manage tag files
     Plug 'AndrewRadev/splitjoin.vim' " Splitjoin
     Plug 'sickill/vim-pasta' " Vim pasta
     " Plug 'Keithbsmiley/investigate.vim' " Helper
@@ -336,6 +339,10 @@ if count(g:ivim_bundle_groups, 'ui')
         let g:tender_airline=1
         let g:airline_theme='tender'
     endif
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+    let g:airline_symbols.space = "\ua0"
     set ttimeoutlen=10
 
     let g:bufferline_echo=0
@@ -401,6 +408,16 @@ if has('gui_running')
     set guioptions-=T "remove toolbar
     set guioptions-=r "remove right-hand scroll bar
     set guioptions-=L "remove left-hand scroll bar
+else
+    " Enable mouse use in all modes
+    set mouse=a
+    " Set this to the name of your terminal that supports mouse codes.
+    " Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+
+    " nvim
+    if !has('nvim')
+        set ttymouse=xterm2
+    endif
 endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -577,7 +594,7 @@ command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
 nnoremap <leader>b :ls<cr>:b<space>
 
 " new tab
-nnoremap <leader>T :tabnew<cr>
+nnoremap <leader>t :tabnew<cr>:Startify<cr>
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -717,7 +734,8 @@ endif
 if count(g:ivim_bundle_groups, 'move')
 
     " -> Tag bar
-    nnoremap <Leader>t :TagbarToggle<CR>
+    " nnoremap <Leader>t :TagbarToggle<CR>
+    nmap <F8> :TagbarToggle<CR>
     let g:tagbar_autofocus=1
     let g:tagbar_expand=1
     let g:tagbar_foldlevel=2
@@ -867,7 +885,7 @@ if count(g:ivim_bundle_groups, 'complete')
         let g:UltiSnipsJumpForwardTrigger="<Tab>"
         let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
 
-        nnoremap <leader>jd :YcmCompleter GoTo<CR>
+        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     endif
 
     " Setting info for snips
@@ -896,6 +914,10 @@ if count(g:ivim_bundle_groups, 'compile')
 
     " let g:syntastic_javascript_checkers = ['flowplusjshint']
     let g:syntastic_javascript_checkers = ['eslint']
+    let g:syntastic_typescript_checkers = ['tslint', 'tsc']
+    " let g:syntastic_typescript_checkers = ['tslint']
+    " let g:syntastic_typescript_checkers = ['tsc']
+    " let g:syntastic_typescript_tslint_args = "--config tslint.json --project tsconfig.json"
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
@@ -980,6 +1002,7 @@ Project     'www.vispar.com'
 Project     'www.hkapply.com'
 
 Project     'rust'
+Project     'rxjs'
 
 " local project
 call project#rc("/Users/joe/Codes/local")
@@ -1013,6 +1036,7 @@ let g:startify_bookmarks=[
 \'/Users/joe/Codes/www.vispar.com',
 \'/Users/joe/Codes/www.hkapply.com',
 \'/Users/joe/Codes/rust',
+\'/Users/joe/Codes/rxjs',
 \'/Users/joe/Codes/local/npm_test',
 \'/Users/joe/Github/dragger',
 \'/Users/joe/Github/only-loader',
