@@ -38,8 +38,8 @@ let g:ivim_user='Guangda Zhang' " User name
 let g:ivim_email='zhangxiaoyu9350@gmail.com' " User email
 let g:ivim_github='https://github.com/inkless' " User github
 
-" ivim color settings (hybrid, gruvbox or tender)
-let g:ivim_default_scheme='hybrid'
+" ivim color settings (OceanNext, PaperColor, hybrid, gruvbox or tender)
+let g:ivim_default_scheme='OceanicNext'
 " ivim ui setting
 let g:ivim_fancy_font=1 " Enable using fancy font
 let g:ivim_show_number=1 " Enable showing number
@@ -158,6 +158,11 @@ if count(g:ivim_bundle_groups, 'ui') " UI setting
     Plug 'w0ng/vim-hybrid' " Colorscheme hybrid
     Plug 'morhetz/gruvbox' " Colorscheme gruvbox
     Plug 'jacoborus/tender.vim' " Colorscheme tender
+    Plug 'inkless/papercolor-theme' " Colorscheme papercolor
+    Plug 'jpo/vim-railscasts-theme' " Color theme railscacts
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'jdkanani/vim-material-theme'
+    Plug 'mhartington/oceanic-next'
     Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' " Status line
     Plug 'ryanoasis/vim-devicons' " Devicons
     " Plug 'bling/vim-bufferline' " Buffer line
@@ -190,7 +195,7 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     " Plug 'maxbrunsfeld/vim-yankstack' " kill-ring for vim
     Plug 'vim-scripts/YankRing.vim' "yank history for vim
     Plug 'amiorin/vim-project' " Project
-    Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss'] } " hmm
+    Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss', 'vim'] } " hmm
     Plug 'KabbAmine/vCoolor.vim' " Color Picker
 endif
 
@@ -247,6 +252,8 @@ if count(g:ivim_bundle_groups, 'git') " Git
 endif
 
 if count(g:ivim_bundle_groups, 'language') " Language Specificity
+    Plug 'Shougo/vimproc.vim', {'do' : 'make'} " vim proc
+    Plug 'Quramy/tsuquyomi' " typescript plugin
     Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
     Plug 'fatih/vim-go', { 'for': 'go' } " Golang
     Plug 'tpope/vim-rails', { 'for': [] } " Rails
@@ -255,10 +262,13 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'sheerun/vim-polyglot' " Language Support
     Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
     Plug 'greyblake/vim-preview' " vim preview
+    Plug 'posva/vim-vue' " vue syntax support
     Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
     Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } " JavaScript
-    Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] } " JSX
+    " Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] } " JSX
     Plug 'maksimr/vim-jsbeautify' " javascript format
+    Plug 'vim-ruby/vim-ruby' " vim ruby
+    Plug 'tpope/vim-bundler' " gem bundler
     Plug 'rust-lang/rust.vim' " Rust
 endif
 
@@ -338,6 +348,8 @@ if count(g:ivim_bundle_groups, 'ui')
     elseif g:ivim_default_scheme=='tender'
         let g:tender_airline=1
         let g:airline_theme='tender'
+    elseif g:ivim_default_scheme=='OceanicNext'
+        let g:airline_theme='oceanicnext'
     endif
     if !exists('g:airline_symbols')
         let g:airline_symbols = {}
@@ -441,6 +453,10 @@ if count(g:ivim_bundle_groups, 'ui')
         colorscheme gruvbox
     elseif g:ivim_default_scheme=='tender'
         colorscheme tender
+    elseif g:ivim_default_scheme=='PaperColor'
+        colorscheme PaperColor
+    elseif g:ivim_default_scheme=='OceanicNext'
+        colorscheme OceanicNext
     endif
 else
     colorscheme desert
@@ -913,11 +929,9 @@ if count(g:ivim_bundle_groups, 'compile')
     endif
 
     " let g:syntastic_javascript_checkers = ['flowplusjshint']
-    let g:syntastic_javascript_checkers = ['eslint']
-    let g:syntastic_typescript_checkers = ['tslint', 'tsc']
-    " let g:syntastic_typescript_checkers = ['tslint']
-    " let g:syntastic_typescript_checkers = ['tsc']
-    " let g:syntastic_typescript_tslint_args = "--config tslint.json --project tsconfig.json"
+    let g:syntastic_javascript_checkers = ['eslint', 'jshint']
+    let g:tsuquyomi_disable_quickfix = 1
+    let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
@@ -950,6 +964,8 @@ if count(g:ivim_bundle_groups, 'language')
 
     " -> jsdoc.vim
     nmap <silent> <C-m> <Plug>(jsdoc)
+    let g:jsdoc_enable_es6=1
+    let g:jsdoc_param_description_separator='-'
 
     " -> JS beautify
     function! Beautify()
@@ -966,6 +982,9 @@ if count(g:ivim_bundle_groups, 'language')
         endif
     endfunction
     command! -nargs=0 Beautify call Beautify()
+
+    " -> javascript.vim
+    autocmd BufNewFile,BufRead *.es6 set filetype=javascript
 
 endif
 
@@ -998,11 +1017,13 @@ Project     'node-db-migrator'
 Project     'es6-fe-boilerplate'
 Project     'lebab-sublime'
 
-Project     'www.vispar.com'
-Project     'www.hkapply.com'
-
 Project     'rust'
 Project     'rxjs'
+
+" websites
+call project#rc("/Users/joe/sites")
+Project     'www.vispar.com'
+Project     'www.hkapply.com'
 
 " local project
 call project#rc("/Users/joe/Codes/local")
@@ -1033,8 +1054,8 @@ let g:startify_bookmarks=[
 \'/Users/joe/Codes/node-db-migrator',
 \'/Users/joe/Codes/lebab-sublime',
 \'/Users/joe/Codes/es6-fe-boilerplate',
-\'/Users/joe/Codes/www.vispar.com',
-\'/Users/joe/Codes/www.hkapply.com',
+\'/Users/joe/sites/www.vispar.com',
+\'/Users/joe/sites/www.hkapply.com',
 \'/Users/joe/Codes/rust',
 \'/Users/joe/Codes/rxjs',
 \'/Users/joe/Codes/local/npm_test',
