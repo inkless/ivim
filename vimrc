@@ -205,7 +205,6 @@ if count(g:ivim_bundle_groups, 'move') " Moving
     Plug 'unblevable/quick-scope' " Quick scope
     Plug 'bkad/CamelCaseMotion' " Camel case motion
     Plug 'majutsushi/tagbar' " Tag bar
-    Plug 'edsono/vim-matchit' " Match it
 endif
 
 if count(g:ivim_bundle_groups, 'navigate') " Navigation
@@ -781,11 +780,6 @@ if count(g:ivim_bundle_groups, 'move')
         \]
     \}
 
-    " Matchit
-    " Use Tab instead of % to switch
-    " nmap <Tab> %
-    " vmap <Tab> %
-
 endif
 
 " Setting for navigation plugins
@@ -895,6 +889,7 @@ if count(g:ivim_bundle_groups, 'complete')
         let g:ycm_rust_src_path = '/usr/local/lib/rust/rustc-1.9.0/src'
         " -> python
         let g:ycm_python_binary_path = 'python'
+        let g:ycm_server_python_interpreter = '/usr/bin/python'
 
         " -> UltiSnips
         let g:UltiSnipsExpandTrigger="<C-K>"
@@ -997,72 +992,37 @@ let g:project_enable_welcome=0
 let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
-call project#rc("/Users/joe/Codes")
-
-Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
-Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
+call project#rc("/home/inkless/dev")
 
 Project     'tile-engine'
 Project     'tile-engine-cli'
-Project     'ansible-playbook'
-Project     'sptools'
-
-Project     'jenkins-proxy'
-Project     'bs-debug'
-Project     'speedcurve'
-Project     'metrics-scripts'
-Project     'speedtest'
-
 Project     'node-db-migrator'
 Project     'es6-fe-boilerplate'
 Project     'lebab-sublime'
-
-Project     'rust'
-Project     'rxjs'
+Project     'only-loader'
 
 " websites
-call project#rc("/Users/joe/sites")
+call project#rc("/home/inkless/sites")
 Project     'www.vispar.com'
 Project     'www.hkapply.com'
 
 " local project
-call project#rc("/Users/joe/Codes/local")
+call project#rc("/home/inkless/playground")
 Project     'npm_test'
-
-" Some github projects
-call project#rc("/Users/joe/Github")
-
-Project     'dragger'
-Project     'only-loader'
-Project     'react'
-Project     'redux'
 
 " we are not using vim-project's welcome page
 " so we have to define in Startify again
 let g:startify_bookmarks=[
-\'/Users/joe/Codes/spsites/main/src/main/webapp/static',
-\'/Users/joe/Codes/spsites/main/src/test/js/unit',
-\'/Users/joe/Codes/tile-engine',
-\'/Users/joe/Codes/tile-engine-cli',
-\'/Users/joe/Codes/ansible-playbook',
-\'/Users/joe/Codes/sptools',
-\'/Users/joe/Codes/jenkins-proxy',
-\'/Users/joe/Codes/bs-debug',
-\'/Users/joe/Codes/speedcurve',
-\'/Users/joe/Codes/metrics-scripts',
-\'/Users/joe/Codes/speedtest',
-\'/Users/joe/Codes/node-db-migrator',
-\'/Users/joe/Codes/lebab-sublime',
-\'/Users/joe/Codes/es6-fe-boilerplate',
-\'/Users/joe/sites/www.vispar.com',
-\'/Users/joe/sites/www.hkapply.com',
-\'/Users/joe/Codes/rust',
-\'/Users/joe/Codes/rxjs',
-\'/Users/joe/Codes/local/npm_test',
-\'/Users/joe/Github/dragger',
-\'/Users/joe/Github/only-loader',
-\'/Users/joe/Github/react',
-\'/Users/joe/Github/redux',
+\'/home/inkless/dev/tile-engine',
+\'/home/inkless/dev/tile-engine-cli',
+\'/home/inkless/dev/node-db-migrator',
+\'/home/inkless/dev/lebab-sublime',
+\'/home/inkless/dev/es6-fe-boilerplate',
+\'/home/inkless/dev/dragger',
+\'/home/inkless/dev/only-loader',
+\'/home/inkless/sites/www.vispar.com',
+\'/home/inkless/sites/www.hkapply.com',
+\'/home/inkless/playground/npm_test',
 \]
 
 
