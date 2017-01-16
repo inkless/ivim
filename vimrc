@@ -1003,8 +1003,8 @@ Project     'only-loader'
 
 " websites
 call project#rc("/home/inkless/sites")
-Project     'www.vispar.com'
 Project     'www.hkapply.com'
+Project     'www.majiangmian.com'
 
 " local project
 call project#rc("/home/inkless/playground")
@@ -1020,8 +1020,8 @@ let g:startify_bookmarks=[
 \'/home/inkless/dev/es6-fe-boilerplate',
 \'/home/inkless/dev/dragger',
 \'/home/inkless/dev/only-loader',
-\'/home/inkless/sites/www.vispar.com',
 \'/home/inkless/sites/www.hkapply.com',
+\'/home/inkless/sites/www.majiangmian.com',
 \'/home/inkless/playground/npm_test',
 \]
 
