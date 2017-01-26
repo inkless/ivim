@@ -466,11 +466,13 @@ if has('gui_running')
     if has('gui_gtk')
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono\ 14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
-        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono\ 12
+        " set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono\ 12
+        set guifont=SauceCodePro\ Nerd\ Font\ Medium\ 11
     else
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono:h14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
-        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono:h12
+        " set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono:h12
+        set guifont=SauceCodePro\ Nerd\ Font\ Medium:h11
     endif
     set linespace=2
 endif
@@ -726,9 +728,9 @@ if count(g:ivim_bundle_groups, 'enhance')
     map <silent> <leader>3 :diffget 3<CR>
     map <silent> <leader>4 :diffget 4<CR>
 
-    if has('gui_running')
-        set macmeta
-    endif
+    " if has('gui_running')
+    "     set macmeta
+    " endif
 
     set clipboard=unnamed
 
@@ -1006,9 +1008,12 @@ call project#rc("/home/inkless/sites")
 Project     'www.hkapply.com'
 Project     'www.majiangmian.com'
 
-" local project
+" playground
 call project#rc("/home/inkless/playground")
 Project     'npm_test'
+
+" dotfiles
+Project     '/home/inkless/dotfiles',   'dotfiles'
 
 " we are not using vim-project's welcome page
 " so we have to define in Startify again
@@ -1023,6 +1028,7 @@ let g:startify_bookmarks=[
 \'/home/inkless/sites/www.hkapply.com',
 \'/home/inkless/sites/www.majiangmian.com',
 \'/home/inkless/playground/npm_test',
+\'/home/inkless/dotfiles',
 \]
 
 
