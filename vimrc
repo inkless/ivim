@@ -205,7 +205,6 @@ if count(g:ivim_bundle_groups, 'move') " Moving
     Plug 'unblevable/quick-scope' " Quick scope
     Plug 'bkad/CamelCaseMotion' " Camel case motion
     Plug 'majutsushi/tagbar' " Tag bar
-    Plug 'edsono/vim-matchit' " Match it
 endif
 
 if count(g:ivim_bundle_groups, 'navigate') " Navigation
@@ -256,20 +255,21 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'Quramy/tsuquyomi' " typescript plugin
     Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
     Plug 'fatih/vim-go', { 'for': 'go' } " Golang
-    Plug 'tpope/vim-rails', { 'for': [] } " Rails
+    Plug 'tpope/vim-rails' " Rails
     Plug 'mattn/emmet-vim' " Emmet
     Plug 'LaTeX-Box-Team/LaTeX-Box' " LaTex
     Plug 'sheerun/vim-polyglot' " Language Support
     Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
     Plug 'greyblake/vim-preview' " vim preview
     Plug 'posva/vim-vue' " vue syntax support
-    Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
+    " Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
     Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } " JavaScript
     " Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] } " JSX
     Plug 'maksimr/vim-jsbeautify' " javascript format
     Plug 'vim-ruby/vim-ruby' " vim ruby
     Plug 'tpope/vim-bundler' " gem bundler
     Plug 'rust-lang/rust.vim' " Rust
+    Plug 'joukevandermaas/vim-ember-hbs' " ember handlebars
 endif
 
 if filereadable(expand($HOME . '/.vimrc.bundles.local')) " Load local bundles
@@ -467,11 +467,11 @@ if has('gui_running')
     if has('gui_gtk')
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono\ 14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
-        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono\ 12
+        set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
     else
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono:h14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
-        set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono:h12
+        set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
     endif
     set linespace=2
 endif
@@ -812,12 +812,16 @@ if count(g:ivim_bundle_groups, 'navigate')
     set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
+    let g:ctrlp_max_files = 0
+    let g:ctrlp_max_depth = 40
 
     if executable('ag')
         " Use ag over grep
         " set grepprg=ag\ --nogroup\ --nocolor\ --column
         " set grepformat=%f:%l:%c%m
         let g:ackprg = 'ag --vimgrep'
+        cnoreabbrev Ack Ack!
+        nnoremap <Leader>a :Ack!<Space>
 
         nnoremap K :Ack "\b<C-R><C-W>\b"<CR>
 
@@ -917,7 +921,7 @@ if count(g:ivim_bundle_groups, 'compile')
 
     " -> Syntastic
     let g:syntastic_check_on_open=0
-    let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['html', 'hbs'] }
+    let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['html', 'hbs', 'scss'] }
     let g:syntastic_aggregate_errors=1
     let g:syntastic_auto_jump=1
     let g:syntastic_auto_loc_list=1
@@ -997,72 +1001,29 @@ let g:project_enable_welcome=0
 let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
-call project#rc("/Users/joe/Codes")
-
-Project     'spsites/main/src/main/webapp/static' , 'spsites-static'
-Project     'spsites/main/src/test/js/unit'       , 'spsites-unit'
-
-Project     'tile-engine'
-Project     'tile-engine-cli'
-Project     'ansible-playbook'
-Project     'sptools'
-
-Project     'jenkins-proxy'
-Project     'bs-debug'
-Project     'speedcurve'
-Project     'metrics-scripts'
-Project     'speedtest'
-
-Project     'node-db-migrator'
-Project     'es6-fe-boilerplate'
-Project     'lebab-sublime'
-
-Project     'rust'
-Project     'rxjs'
-
-" websites
-call project#rc("/Users/joe/sites")
-Project     'www.vispar.com'
-Project     'www.hkapply.com'
+call project#rc("/Users/inkless")
+Project     'ali'
+Project     'ali/client/web_app'    , 'web_app'
+Project     'ali/client/core'       , 'core'
+Project     'ali/client/chrome-ext' , 'chrome-ext'
 
 " local project
-call project#rc("/Users/joe/Codes/local")
+call project#rc("/Users/inless/playground")
 Project     'npm_test'
 
 " Some github projects
-call project#rc("/Users/joe/Github")
-
-Project     'dragger'
-Project     'only-loader'
+call project#rc("/Users/joe/github")
 Project     'react'
 Project     'redux'
 
 " we are not using vim-project's welcome page
 " so we have to define in Startify again
 let g:startify_bookmarks=[
-\'/Users/joe/Codes/spsites/main/src/main/webapp/static',
-\'/Users/joe/Codes/spsites/main/src/test/js/unit',
-\'/Users/joe/Codes/tile-engine',
-\'/Users/joe/Codes/tile-engine-cli',
-\'/Users/joe/Codes/ansible-playbook',
-\'/Users/joe/Codes/sptools',
-\'/Users/joe/Codes/jenkins-proxy',
-\'/Users/joe/Codes/bs-debug',
-\'/Users/joe/Codes/speedcurve',
-\'/Users/joe/Codes/metrics-scripts',
-\'/Users/joe/Codes/speedtest',
-\'/Users/joe/Codes/node-db-migrator',
-\'/Users/joe/Codes/lebab-sublime',
-\'/Users/joe/Codes/es6-fe-boilerplate',
-\'/Users/joe/sites/www.vispar.com',
-\'/Users/joe/sites/www.hkapply.com',
-\'/Users/joe/Codes/rust',
-\'/Users/joe/Codes/rxjs',
-\'/Users/joe/Codes/local/npm_test',
-\'/Users/joe/Github/dragger',
-\'/Users/joe/Github/only-loader',
-\'/Users/joe/Github/react',
-\'/Users/joe/Github/redux',
+\'/Users/inkless/ali',
+\'/Users/inkless/ali/client/web_app',
+\'/Users/inkless/ali/client/core',
+\'/Users/inkless/ali/client/chrome-ext',
+\'/Users/inkless/playtground/npm_test',
 \]
 
 
