@@ -396,6 +396,13 @@ if g:ivim_show_number
     set number " Show line numbers
     " Toggle relativenumber
     nnoremap <Leader>n :set relativenumber!<CR>
+
+    " setglobal relativenumber
+    autocmd WinEnter,FocusGained * :setlocal relativenumber
+    autocmd WinLeave,FocusLost * :setlocal number
+    autocmd InsertEnter * :setlocal number
+    autocmd InsertLeave * :setlocal relativenumber
+
 endif
 
 set formatoptions+=rnlmM " Optimize format options
@@ -781,6 +788,27 @@ if count(g:ivim_bundle_groups, 'move')
         \]
     \}
 
+    let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+    " Jump to anywhere you want with minimal keystrokes, with just one key binding.
+    " `s{char}{label}`
+    " nmap s <Plug>(easymotion-overwin-f)
+    " or
+    " `s{char}{char}{label}`
+    " Need one more keystroke, but on average, it may be more comfortable.
+    nmap s <Plug>(easymotion-overwin-f2)
+
+    " Turn on case insensitive feature
+    let g:EasyMotion_smartcase = 1
+
+    " Move to line
+    " map <Leader>L <Plug>(easymotion-bd-jk)
+    nmap <Leader>l <Plug>(easymotion-overwin-line)
+
+    " Move to word
+    " map  <Leader>w <Plug>(easymotion-bd-w)
+    nmap <Leader>w <Plug>(easymotion-overwin-w)
+
     " Matchit
     " Use Tab instead of % to switch
     " nmap <Tab> %
@@ -810,7 +838,7 @@ if count(g:ivim_bundle_groups, 'navigate')
 
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
     set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
-    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
+    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|tmp)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
     let g:ctrlp_max_files = 0
     let g:ctrlp_max_depth = 40
@@ -823,7 +851,7 @@ if count(g:ivim_bundle_groups, 'navigate')
         cnoreabbrev Ack Ack!
         nnoremap <Leader>a :Ack!<Space>
 
-        nnoremap K :Ack "\b<C-R><C-W>\b"<CR>
+        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore="tmp,node_modules,dist"<CR>
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -1001,18 +1029,13 @@ let g:project_enable_welcome=0
 let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
-call project#rc("/Users/inkless")
-Project     'ali'
-Project     'ali/client/web_app'    , 'web_app'
-Project     'ali/client/core'       , 'core'
-Project     'ali/client/chrome-ext' , 'chrome-ext'
 
 " local project
 call project#rc("/Users/inless/playground")
 Project     'npm_test'
 
 " Some github projects
-call project#rc("/Users/joe/github")
+call project#rc("/Users/inkless/github")
 Project     'react'
 Project     'redux'
 
