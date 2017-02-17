@@ -1011,6 +1011,7 @@ Project     'www.majiangmian.com'
 " playground
 call project#rc("/home/inkless/playground")
 Project     'npm_test'
+Project     'super_rentals'
 
 " dotfiles
 Project     '/home/inkless/dotfiles',   'dotfiles'
@@ -1028,6 +1029,7 @@ let g:startify_bookmarks=[
 \'/home/inkless/sites/www.hkapply.com',
 \'/home/inkless/sites/www.majiangmian.com',
 \'/home/inkless/playground/npm_test',
+\'/home/inkless/playground/super-rentals',
 \'/home/inkless/dotfiles',
 \]
 
