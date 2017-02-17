@@ -255,7 +255,7 @@ if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'Quramy/tsuquyomi' " typescript plugin
     Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
     Plug 'fatih/vim-go', { 'for': 'go' } " Golang
-    Plug 'tpope/vim-rails', { 'for': [] } " Rails
+    Plug 'tpope/vim-rails' " Rails
     Plug 'mattn/emmet-vim' " Emmet
     Plug 'LaTeX-Box-Team/LaTeX-Box' " LaTex
     Plug 'sheerun/vim-polyglot' " Language Support
@@ -395,6 +395,13 @@ if g:ivim_show_number
     set number " Show line numbers
     " Toggle relativenumber
     nnoremap <Leader>n :set relativenumber!<CR>
+
+    " setglobal relativenumber
+    autocmd WinEnter,FocusGained * :setlocal relativenumber
+    autocmd WinLeave,FocusLost * :setlocal number
+    autocmd InsertEnter * :setlocal number
+    autocmd InsertLeave * :setlocal relativenumber
+
 endif
 
 set formatoptions+=rnlmM " Optimize format options
@@ -782,6 +789,28 @@ if count(g:ivim_bundle_groups, 'move')
         \]
     \}
 
+    let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+    " Jump to anywhere you want with minimal keystrokes, with just one key binding.
+    " `s{char}{label}`
+    " nmap s <Plug>(easymotion-overwin-f)
+    " or
+    " `s{char}{char}{label}`
+    " Need one more keystroke, but on average, it may be more comfortable.
+    nmap s <Plug>(easymotion-overwin-f2)
+
+    " Turn on case insensitive feature
+    let g:EasyMotion_smartcase = 1
+
+    " Move to line
+    " map <Leader>L <Plug>(easymotion-bd-jk)
+    nmap <Leader>l <Plug>(easymotion-overwin-line)
+
+    " Move to word
+    " map  <Leader>w <Plug>(easymotion-bd-w)
+    nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+
 endif
 
 " Setting for navigation plugins
@@ -808,14 +837,19 @@ if count(g:ivim_bundle_groups, 'navigate')
     set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
     let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
+    let g:ctrlp_max_files = 0
+    let g:ctrlp_max_depth = 40
+
 
     if executable('ag')
         " Use ag over grep
         " set grepprg=ag\ --nogroup\ --nocolor\ --column
         " set grepformat=%f:%l:%c%m
         let g:ackprg = 'ag --vimgrep'
+        cnoreabbrev Ack Ack!
+        nnoremap <Leader>a : Ack!<Space>
 
-        nnoremap K :Ack "\b<C-R><C-W>\b"<CR>
+        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore="tmp,node_modules,dist"<CR>
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
