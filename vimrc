@@ -748,7 +748,7 @@ if count(g:ivim_bundle_groups, 'enhance')
     nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
     nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 
-    nnoremap <silent> <F11> :YRShow<CR>
+    nnoremap <silent> <Leader>y :YRShow<CR>
 
     " set foldmethod=syntax " allow fold code
 
