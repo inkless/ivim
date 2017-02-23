@@ -849,7 +849,7 @@ if count(g:ivim_bundle_groups, 'navigate')
         cnoreabbrev Ack Ack!
         nnoremap <Leader>a : Ack!<Space>
 
-        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore="tmp,node_modules,dist"<CR>
+        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist}<CR>
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -1028,49 +1028,8 @@ let g:project_enable_welcome=0
 let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
-call project#rc("~/dev")
 
-Project     'update-ip'
-Project     'tile-engine'
-Project     'tile-engine-cli'
-Project     'node-db-migrator'
-Project     'es6-fe-boilerplate'
-Project     'lebab-sublime'
-Project     'only-loader'
-
-" websites
-call project#rc("~/sites")
-Project     'www.zhangguangda.com'
-Project     'www.hkapply.com'
-Project     'www.majiangmian.com'
-
-" playground
-call project#rc("~/playground")
-Project     'npm_test'
-Project     'super_rentals'
-
-" dotfiles
-Project     '~/dotfiles',   'dotfiles'
-
-" we are not using vim-project's welcome page
-" so we have to define in Startify again
-let g:startify_bookmarks=[
-\'~/dev/update-ip',
-\'~/dev/tile-engine',
-\'~/dev/tile-engine-cli',
-\'~/dev/node-db-migrator',
-\'~/dev/lebab-sublime',
-\'~/dev/es6-fe-boilerplate',
-\'~/dev/dragger',
-\'~/dev/only-loader',
-\'~/sites/www.zhangguangda.com',
-\'~/sites/www.hkapply.com',
-\'~/sites/www.majiangmian.com',
-\'~/playground/npm_test',
-\'~/playground/super-rentals',
-\'~/dotfiles',
-\]
-
+" config of projects should go to vimrc.local
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

@@ -1,0 +1,42 @@
+call project#rc("~/dev")
+
+Project     'update-ip'
+Project     'tile-engine'
+Project     'tile-engine-cli'
+Project     'node-db-migrator'
+Project     'es6-fe-boilerplate'
+Project     'lebab-sublime'
+Project     'only-loader'
+
+" websites
+call project#rc("~/sites")
+Project     'www.zhangguangda.com'
+Project     'www.hkapply.com'
+Project     'www.majiangmian.com'
+
+" playground
+call project#rc("~/playground")
+Project     'npm_test'
+Project     'super_rentals'
+
+" dotfiles
+Project     '~/dotfiles',   'dotfiles'
+
+" we are not using vim-project's welcome page
+" so we have to define in Startify again
+let g:startify_bookmarks=[
+\'~/dev/update-ip',
+\'~/dev/tile-engine',
+\'~/dev/tile-engine-cli',
+\'~/dev/node-db-migrator',
+\'~/dev/lebab-sublime',
+\'~/dev/es6-fe-boilerplate',
+\'~/dev/dragger',
+\'~/dev/only-loader',
+\'~/sites/www.zhangguangda.com',
+\'~/sites/www.hkapply.com',
+\'~/sites/www.majiangmian.com',
+\'~/playground/npm_test',
+\'~/playground/super-rentals',
+\'~/dotfiles',
+\]
