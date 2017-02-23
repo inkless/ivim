@@ -31,9 +31,3 @@ let g:startify_bookmarks=[
 \'~/projects/froala_editor_sources_2.4.2',
 \'~/projects/broccoli-asset-rewrite',
 \]
-
-if executable('ag')
-  " Override Ack
-  nnoremap <Leader>a :Ack! --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<Space>
-  nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<CR>
-endif
