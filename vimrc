@@ -960,7 +960,7 @@ if count(g:ivim_bundle_groups, 'compile')
     endif
 
     " let g:syntastic_javascript_checkers = ['flowplusjshint']
-    let g:syntastic_javascript_checkers = ['eslint', 'jshint']
+    let g:syntastic_javascript_checkers = ['eslint']
     let g:tsuquyomi_disable_quickfix = 1
     let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
 
@@ -1028,8 +1028,9 @@ let g:project_enable_welcome=0
 let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
-call project#rc("/home/inkless/dev")
+call project#rc("~/dev")
 
+Project     'update-ip'
 Project     'tile-engine'
 Project     'tile-engine-cli'
 Project     'node-db-migrator'
@@ -1038,33 +1039,36 @@ Project     'lebab-sublime'
 Project     'only-loader'
 
 " websites
-call project#rc("/home/inkless/sites")
+call project#rc("~/sites")
+Project     'www.zhangguangda.com'
 Project     'www.hkapply.com'
 Project     'www.majiangmian.com'
 
 " playground
-call project#rc("/home/inkless/playground")
+call project#rc("~/playground")
 Project     'npm_test'
 Project     'super_rentals'
 
 " dotfiles
-Project     '/home/inkless/dotfiles',   'dotfiles'
+Project     '~/dotfiles',   'dotfiles'
 
 " we are not using vim-project's welcome page
 " so we have to define in Startify again
 let g:startify_bookmarks=[
-\'/home/inkless/dev/tile-engine',
-\'/home/inkless/dev/tile-engine-cli',
-\'/home/inkless/dev/node-db-migrator',
-\'/home/inkless/dev/lebab-sublime',
-\'/home/inkless/dev/es6-fe-boilerplate',
-\'/home/inkless/dev/dragger',
-\'/home/inkless/dev/only-loader',
-\'/home/inkless/sites/www.hkapply.com',
-\'/home/inkless/sites/www.majiangmian.com',
-\'/home/inkless/playground/npm_test',
-\'/home/inkless/playground/super-rentals',
-\'/home/inkless/dotfiles',
+\'~/dev/update-ip',
+\'~/dev/tile-engine',
+\'~/dev/tile-engine-cli',
+\'~/dev/node-db-migrator',
+\'~/dev/lebab-sublime',
+\'~/dev/es6-fe-boilerplate',
+\'~/dev/dragger',
+\'~/dev/only-loader',
+\'~/sites/www.zhangguangda.com',
+\'~/sites/www.hkapply.com',
+\'~/sites/www.majiangmian.com',
+\'~/playground/npm_test',
+\'~/playground/super-rentals',
+\'~/dotfiles',
 \]
 
 
