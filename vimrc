@@ -1,4 +1,4 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "       _       _
 "      (_)   __(_)___ ___
 "     / / | / / / __ `__ \
@@ -676,7 +676,7 @@ if count(g:ivim_bundle_groups, 'enhance')
             exe 'TCommentBlock'
             normal! j
         else
-            normal! A   
+            normal! A
             exe 'TCommentRight'
             normal! l
             normal! x
@@ -747,7 +747,7 @@ if count(g:ivim_bundle_groups, 'enhance')
     nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
     nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 
-    nnoremap <silent> <F11> :YRShow<CR>
+    nnoremap <silent> <Leader>y :YRShow<CR>
 
     " set foldmethod=syntax " allow fold code
 
@@ -838,7 +838,7 @@ if count(g:ivim_bundle_groups, 'navigate')
 
     set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
     set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
-    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|tmp)|(\.(swp|ico|git|svn))$'
+    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|tmp|bower_components|coverage)|(\.(swp|ico|git|svn))$'
     let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
     let g:ctrlp_max_files = 0
     let g:ctrlp_max_depth = 40
@@ -1031,22 +1031,44 @@ let g:project_use_nerdtree = 1
 set rtp+=~/.vim/bundle/vim-project/
 
 " local project
-call project#rc("/Users/inless/playground")
+call project#rc("~/playground")
 Project     'npm_test'
+Project     'ember-app'
 
 " Some github projects
-call project#rc("/Users/inkless/github")
-Project     'react'
-Project     'redux'
+call project#rc("~/projects")
+Project     'broccoli-asset-rewrite'
+Project     'froala_editor_sources_2.4.2'
+Project     'ember.js'
+
+Project     '~/scripts'                         , 'scripts'
+Project     '~/dotfiles'                        , 'dotfiles'
+Project     '~/ivim'                            , 'ivim'
+
+Project     '~/ali'                             , 'ali'
+Callback    'ali'                               , 'OverrideAck'
+
+function! OverrideAck(...) abort
+    nnoremap <Leader>a :Ack! --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<Space>
+    nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<CR>
+endfunction
+
+Project     '~/dev-getting-started'             , 'dev-getting-started'
+Project     '~/clientbox'                       , 'clientbox'
 
 " we are not using vim-project's welcome page
 " so we have to define in Startify again
 let g:startify_bookmarks=[
-\'/Users/inkless/ali',
-\'/Users/inkless/ali/client/web_app',
-\'/Users/inkless/ali/client/core',
-\'/Users/inkless/ali/client/chrome-ext',
-\'/Users/inkless/playtground/npm_test',
+\'~/ali',
+\'~/clientbox',
+\'~/dev-getting-started',
+\'~/dotfiles',
+\'~/scripts',
+\'~/playground/ember-app',
+\'~/playground/npm_test',
+\'~/projects/ember.js',
+\'~/projects/froala_editor_sources_2.4.2',
+\'~/projects/broccoli-asset-rewrite',
 \]
 
 
