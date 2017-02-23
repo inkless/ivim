@@ -841,18 +841,20 @@ if count(g:ivim_bundle_groups, 'navigate')
     let g:ctrlp_max_depth = 40
 
 
-    if executable('ag')
-        " Use ag over grep
-        " set grepprg=ag\ --nogroup\ --nocolor\ --column
-        " set grepformat=%f:%l:%c%m
-        let g:ackprg = 'ag --vimgrep'
+    if executable('rg')
+        " Use rg over grep
+        set grepprg=rg\ --vimgrep\ --no-heading
+        set grepformat=%f:%l:%c:%m,%f:%l:%m
+
+        let g:ackprg = 'rg --vimgrep --no-heading'
+
         cnoreabbrev Ack Ack!
         nnoremap <Leader>a : Ack!<Space>
 
-        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist}<CR>
+        nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+        let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
 
         " ag is fast enough that CtrlP doesn't need to cache
         let g:ctrlp_use_caching = 0
