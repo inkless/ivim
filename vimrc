@@ -851,7 +851,7 @@ if count(g:ivim_bundle_groups, 'navigate')
         cnoreabbrev Ack Ack!
         nnoremap <Leader>a :Ack!<Space>
 
-        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore="tmp,node_modules,dist"<CR>
+        nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist}<CR>
 
         " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
         let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -1030,47 +1030,7 @@ let g:project_use_nerdtree = 1
 
 set rtp+=~/.vim/bundle/vim-project/
 
-" local project
-call project#rc("~/playground")
-Project     'npm_test'
-Project     'ember-app'
-
-" Some github projects
-call project#rc("~/projects")
-Project     'broccoli-asset-rewrite'
-Project     'froala_editor_sources_2.4.2'
-Project     'ember.js'
-
-Project     '~/scripts'                         , 'scripts'
-Project     '~/dotfiles'                        , 'dotfiles'
-Project     '~/ivim'                            , 'ivim'
-
-Project     '~/ali'                             , 'ali'
-Callback    'ali'                               , 'OverrideAck'
-
-function! OverrideAck(...) abort
-    nnoremap <Leader>a :Ack! --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<Space>
-    nnoremap K :Ack! "\b<C-R><C-W>\b" --ignore-dir={tmp,node_modules,dist,coverage,vendor,bower_components} --ignore="*.min.js"<CR>
-endfunction
-
-Project     '~/dev-getting-started'             , 'dev-getting-started'
-Project     '~/clientbox'                       , 'clientbox'
-
-" we are not using vim-project's welcome page
-" so we have to define in Startify again
-let g:startify_bookmarks=[
-\'~/ali',
-\'~/clientbox',
-\'~/dev-getting-started',
-\'~/dotfiles',
-\'~/scripts',
-\'~/playground/ember-app',
-\'~/playground/npm_test',
-\'~/projects/ember.js',
-\'~/projects/froala_editor_sources_2.4.2',
-\'~/projects/broccoli-asset-rewrite',
-\]
-
+" config of project files should go to .vimrc.local
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
