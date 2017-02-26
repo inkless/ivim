@@ -655,6 +655,8 @@ if count(g:ivim_bundle_groups, 'ui')
         hi StartifyPath    ctermfg=245
         hi StartifySlash   ctermfg=240
     endif
+    let g:startify_session_autoload       = 1
+    let g:startify_session_persistence    = 1
 
     " -> Goyo & Limelight
     autocmd! User GoyoEnter Limelight
@@ -677,7 +679,7 @@ if count(g:ivim_bundle_groups, 'enhance')
             exe 'TCommentBlock'
             normal! j
         else
-            normal! A   
+            normal! A
             exe 'TCommentRight'
             normal! l
             normal! x
