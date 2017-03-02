@@ -1,23 +1,64 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "       _       _
 "      (_)   __(_)___ ___
 "     / / | / / / __ `__ \
 "    / /| |/ / / / / / / /
 "   /_/ |___/_/_/ /_/ /_/  mini
 "
-"   ivim mini (ivim for fast and basic usage)
-"   Main Contributor: Xiao-Ou Zhang (kepbod) <kepbod@gmail.com>
+"   Main Contributor: Guangda Zhang (inkless) <zhangxiaoyu9350@gmail.com>
 "   Version: 2.5
-"   Created: 2015-09-24
-"   Last Modified: 2016-06-22
+"   Created: 2012-01-20
+"   Last Modified: 2016-07-01
 "
+"   Sections:
+"     -> ivim Setting
+"     -> General
+"     -> Platform Specific Setting
+"     -> Vim-plug
+"     -> User Interface
+"     -> Colors and Fonts
+"     -> Indent Related
+"     -> Search Related
+"     -> Fold Related
+"     -> Key Mapping
+"     -> Plugin Setting
+"     -> Local Setting
+"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"------------------------------------------------
+" => ivim Setting
+"------------------------------------------------
+
+" ivim user setting
+let g:ivim_user='Guangda Zhang' " User name
+let g:ivim_email='zhangxiaoyu9350@gmail.com' " User email
+let g:ivim_github='https://github.com/inkless' " User github
+
+" ivim color settings (OceanNext, PaperColor, hybrid, gruvbox or tender)
+let g:ivim_default_scheme='OceanicNext'
+" ivim ui setting
+let g:ivim_fancy_font=1 " Enable using fancy font
+let g:ivim_show_number=1 " Enable showing number
+" ivim autocomplete setting (YCM or NEO)
+"
+" ivim plugin setting
+let g:ivim_bundle_groups=['ui', 'enhance', 'move', 'navigate', 'git', 'language']
+
+" Customise ivim settings for personal usage
+if filereadable(expand($HOME . '/.vimrc.ivim.local'))
+    source $HOME/.vimrc.ivim.local
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "------------------------------------------------
 " => General
 "------------------------------------------------
 
-set nocompatible " Get out of vi compatible mode
 filetype plugin indent on " Enable filetype
 let mapleader=',' " Change the mapleader
 let maplocalleader='\' " Change the maplocalleader
@@ -69,18 +110,35 @@ function! InitializeDirectories()
 endfunction
 call InitializeDirectories()
 
-autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
-autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
+" autocmd BufWinLeave *.* silent! mkview " Make Vim save view (state) (folds, cursor, etc)
+" autocmd BufWinEnter *.* silent! loadview " Make Vim load view (state) (folds, cursor, etc)
 
 " No sound on errors
 set noerrorbells
 set novisualbell
 set t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"-------------------------------------------------
+" => Platform Specific Setting
+"-------------------------------------------------
+
+" On Windows, also use .vim instead of vimfiles
+if has('win32') || has('win64')
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+endif
+
+set viewoptions+=slash,unix " Better Unix/Windows compatibility
+set viewoptions-=options " in case of mapping change
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "--------------------------------------------------
-" => Vim-plug
+" => Vim-Plug
 "--------------------------------------------------
 
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -89,48 +147,71 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
-call plug#begin('~/.vim/bundle/')
+call plug#begin('~/.vim/bundle')
 
-" Install plugins
-Plug 'kepbod/vim-hybrid' " Colorscheme hybrid
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' " Status line
-Plug 'ryanoasis/vim-devicons' " Devicons
-Plug 'bling/vim-bufferline' " Buffer line
-Plug 'mhinz/vim-startify' " Start page
-Plug 'Raimondi/delimitMate' " Closing of quotes
-Plug 'tomtom/tcomment_vim' " Commenter
-Plug 'kristijanhusak/vim-multiple-cursors' " Multiple cursors
-Plug 'tpope/vim-surround' " Surround
-Plug 'tpope/vim-repeat' " Repeat
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  } " Fuzzy finder
-Plug 'junegunn/fzf.vim' " Fuzzy finder plugin
-Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] } " Easy align
-Plug 'sickill/vim-pasta' " Vim pasta
-Plug 'Keithbsmiley/investigate.vim' " Helper
-Plug 'roman/golden-ratio' " Resize windows
-Plug 'chrisbra/vim-diff-enhanced' " Create better diffs
-Plug 'unblevable/quick-scope' " Quick scope
-Plug 'bkad/CamelCaseMotion' " Camel case motion
-Plug 'majutsushi/tagbar' " Tag bar
-Plug 'ludovicchabant/vim-gutentags' " Manage tag files
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " NERD tree
-Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERD tree git
-if has('lua')
-    Plug 'Shougo/neocomplete.vim' " Auto completion framework
-else
-    Plug 'Shougo/neocomplcache.vim' " Auto completion framework
+if count(g:ivim_bundle_groups, 'ui') " UI setting
+    Plug 'jdkanani/vim-material-theme'
+    Plug 'mhartington/oceanic-next'
+    Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes' " Status line
+    Plug 'ryanoasis/vim-devicons' " Devicons
+    Plug 'mhinz/vim-startify' " Start page
 endif
-Plug 'Shougo/neosnippet.vim' " Snippet engine
-Plug 'Shougo/neosnippet-snippets' " Snippets
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-Plug 'scrooloose/syntastic' " Syntax checking
-Plug 'tpope/vim-fugitive' " Git wrapper
-Plug 'edsono/vim-matchit' " Match it
-Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
-Plug 'fatih/vim-go', {'for': 'go'} " Vim go
-Plug 'airblade/vim-gitgutter' " Git diff sign
-Plug 'mattn/emmet-vim', { 'for': ['html', 'css'] } " Emmet
-Plug 'sheerun/vim-polyglot' " Language Support
+
+if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
+    Plug 'Raimondi/delimitMate' " Closing of quotes
+    Plug 'tomtom/tcomment_vim' " Commenter
+    Plug 'tpope/vim-abolish' " Abolish
+    Plug 'tpope/vim-speeddating' " Speed dating
+    Plug 'tpope/vim-repeat' " Repeat
+    Plug 'kristijanhusak/vim-multiple-cursors' " Multiple cursors
+    Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' } " Undo tree
+    Plug 'tpope/vim-surround' " Surround
+    Plug 'junegunn/vim-easy-align', { 'on': ['<Plug>(EasyAlign)', 'EasyAlign'] } " Easy align
+    Plug 'AndrewRadev/splitjoin.vim' " Splitjoin
+    Plug 'sickill/vim-pasta' " Vim pasta
+    Plug 'wellle/targets.vim' " Text objects
+    Plug 'chrisbra/vim-diff-enhanced' " Create better diffs
+    Plug 'mhinz/vim-hugefile' " Largefile
+    Plug 'vim-scripts/YankRing.vim' "yank history for vim
+    Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss', 'vim'] } " hmm
+    Plug 'KabbAmine/vCoolor.vim' " Color Picker
+endif
+
+if count(g:ivim_bundle_groups, 'move') " Moving
+    Plug 'tpope/vim-unimpaired' " Pairs of mappings
+    Plug 'Lokaltog/vim-easymotion' " Easy motion
+    Plug 'unblevable/quick-scope' " Quick scope
+    Plug 'bkad/CamelCaseMotion' " Camel case motion
+endif
+
+if count(g:ivim_bundle_groups, 'navigate') " Navigation
+    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " NERD tree
+    Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' } " NERD tree git plugin
+    Plug 'mhinz/vim-tmuxify' " Tmux panes
+    Plug 'ctrlpvim/ctrlp.vim' " Ctrl P Search
+    Plug 'mileszs/ack.vim' " ack
+endif
+
+if count(g:ivim_bundle_groups, 'git') " Git
+    Plug 'tpope/vim-fugitive' " Git wrapper
+    Plug 'gregsexton/gitv' " Gitk clone
+    if has('signs')
+        Plug 'airblade/vim-gitgutter' " Git diff sign
+    endif
+endif
+
+if count(g:ivim_bundle_groups, 'language') " Language Specificity
+    Plug 'Shougo/vimproc.vim', {'do' : 'make'} " vim proc
+    Plug 'tpope/vim-rails' " Rails
+    Plug 'mattn/emmet-vim' " Emmet
+    Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
+    Plug 'greyblake/vim-preview' " vim preview
+    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } " JavaScript
+    Plug 'maksimr/vim-jsbeautify' " javascript format
+    Plug 'vim-ruby/vim-ruby' " vim ruby
+    Plug 'tpope/vim-bundler' " gem bundler
+    Plug 'joukevandermaas/vim-ember-hbs' " ember handlebars
+endif
 
 if filereadable(expand($HOME . '/.vimrc.bundles.local')) " Load local bundles
     source $HOME/.vimrc.bundles.local
@@ -195,13 +276,32 @@ endfunction
 set guitabtooltip=%F
 
 " Set status line
-set laststatus=2 " Show the statusline
-set noshowmode " Hide the default mode text
-let g:airline_theme='bubblegum'
-set ttimeoutlen=50
-let g:bufferline_echo=0
-let g:bufferline_modified='[+]'
-let g:airline_powerline_fonts=1
+if count(g:ivim_bundle_groups, 'ui')
+    set laststatus=2 " Show the statusline
+    set noshowmode " Hide the default mode text
+    " Set status line colorscheme
+    if g:ivim_default_scheme=='OceanicNext'
+        let g:airline_theme='oceanicnext'
+    endif
+    if !exists('g:airline_symbols')
+        let g:airline_symbols = {}
+    endif
+    let g:airline_symbols.space = "\ua0"
+    set ttimeoutlen=10
+
+    let g:bufferline_echo=0
+    let g:bufferline_modified='[+]'
+
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline#extensions#tabline#fnamemod = ':t'
+
+    if g:ivim_fancy_font
+        let g:airline_powerline_fonts=1
+    else
+        let g:airline_left_sep=''
+        let g:airline_right_sep=''
+    endif
+endif
 
 " Only have cursorline in current window and in normal window
 autocmd WinLeave * set nocursorline
@@ -224,21 +324,52 @@ set sidescrolloff=10 " Minimal number of screen columns to keep away from cursor
 set showmatch " Show matching brackets/parenthesis
 set matchtime=2 " Decrease the time to blink
 
-set number " Show line numbers
+if g:ivim_show_number
+    set number " Show line numbers
+    " Toggle relativenumber
+    nnoremap <Leader>n :set relativenumber!<CR>
+
+    " setglobal relativenumber
+    autocmd WinEnter,FocusGained * :setlocal relativenumber
+    autocmd WinLeave,FocusLost * :setlocal number
+    autocmd InsertEnter * :setlocal number
+    autocmd InsertLeave * :setlocal relativenumber
+
+endif
 
 set formatoptions+=rnlmM " Optimize format options
 set wrap " Set wrap
 set textwidth=80 " Change text width
-set list " Show these tabs and spaces and so on
-set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮ " Change listchars
-set linebreak " Wrap long lines at a blank
-set showbreak=↪  " Change wrap line break
-set fillchars=diff:⣿,vert:│ " Change fillchars
-augroup trailing " Only show trailing whitespace when not in insert mode
-    autocmd!
-    autocmd InsertEnter * :set listchars-=trail:⌴
-    autocmd InsertLeave * :set listchars+=trail:⌴
-augroup END
+if g:ivim_fancy_font
+    set list " Show these tabs and spaces and so on
+    set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮ " Change listchars
+    set linebreak " Wrap long lines at a blank
+    set showbreak=↪  " Change wrap line break
+    set fillchars=diff:⣿,vert:│ " Change fillchars
+    augroup trailing " Only show trailing whitespace when not in insert mode
+        autocmd!
+        autocmd InsertEnter * :set listchars-=trail:⌴
+        autocmd InsertLeave * :set listchars+=trail:⌴
+    augroup END
+endif
+
+" Set gVim UI setting
+if has('gui_running')
+    set guioptions-=m "remove menu
+    set guioptions-=T "remove toolbar
+    set guioptions-=r "remove right-hand scroll bar
+    set guioptions-=L "remove left-hand scroll bar
+else
+    " Enable mouse use in all modes
+    set mouse=a
+    " Set this to the name of your terminal that supports mouse codes.
+    " Must be one of: xterm, xterm2, netterm, dec, jsbterm, pterm
+
+    " nvim
+    if !has('nvim')
+        set ttymouse=xterm2
+    endif
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -247,11 +378,30 @@ augroup END
 "-------------------------------------------------
 
 syntax on " Enable syntax
+set synmaxcol=150
 set background=dark " Set background
-set t_Co=256 " Use 256 colors
+if !has('gui_running')
+    set t_Co=256 " Use 256 colors
+endif
 
 " Load a colorscheme
-colorscheme hybrid
+if count(g:ivim_bundle_groups, 'ui')
+    if g:ivim_default_scheme=='OceanicNext'
+        colorscheme OceanicNext
+    endif
+else
+    colorscheme desert
+endif
+
+" Set GUI font
+if has('gui_running')
+    if has('gui_gtk')
+        set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
+    else
+        set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
+    endif
+    set linespace=2
+endif
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -262,8 +412,9 @@ colorscheme hybrid
 set autoindent " Preserve current indent on new lines
 set cindent " set C style indent
 set expandtab " Convert all tabs typed to spaces
-set softtabstop=4 " Indentation levels every four columns
-set shiftwidth=4 " Indent/outdent by four columns
+set tabstop=2
+set softtabstop=2 " Indentation levels every four columns
+set shiftwidth=2 " Indent/outdent by four columns
 set shiftround " Indent/outdent to nearest tabstop
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -274,9 +425,9 @@ set shiftround " Indent/outdent to nearest tabstop
 
 set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uc present
-set hlsearch " Highlight search terms
+set nohlsearch " Highlight search terms
 set incsearch " Find as you type search
-set gdefault " turn on g flag
+" set gdefault " turn on g flag
 
 " Use sane regexes
 nnoremap / /\v
@@ -285,6 +436,8 @@ cnoremap s/ s/\v
 nnoremap ? ?\v
 vnoremap ? ?\v
 cnoremap s? s?\v
+cnoremap %s/ %smagic/
+cnoremap \>s/ \>smagic/
 
 " Keep search matches in the middle of the window
 nnoremap n nzzzv
@@ -360,8 +513,15 @@ nnoremap g, g,zz
 vnoremap < <gv
 vnoremap > >gv
 
+" Repeat last substitution, including flags, with &.
+nnoremap & :&&<CR>
+xnoremap & :&&<CR>
+
 " Keep the cursor in place while joining lines
 nnoremap J mzJ`z
+
+" Select entire buffer
+nnoremap vaa ggvGg_
 
 " Strip all trailing whitespace in the current file
 nnoremap <Leader>q :%s/\s\+$//<CR>:let @/=''<CR>
@@ -369,168 +529,294 @@ nnoremap <Leader>q :%s/\s\+$//<CR>:let @/=''<CR>
 " Modify all the indents
 nnoremap \= gg=G
 
+" See the differences between the current buffer and the file it was loaded from
+command! DiffOrig vert new | set bt=nofile | r ++edit # | 0d_
+            \ | diffthis | wincmd p | diffthis
+
+" buffer explorer
+nnoremap <leader>b :ls<cr>:b<space>
+
+" new tab
+nnoremap <leader>t :tabnew<cr>:Startify<cr>
+
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "--------------------------------------------------
 " => Plugin Setting
 "--------------------------------------------------
 
-" -> Startify
-let g:startify_session_dir=$HOME . '/.vim/session'
-let g:startify_custom_header=[
-            \'       _       _         ',
-            \'      (_)   __(_)___ ___ ',
-            \'     / / | / / / __ `__ \',
-            \'    / /| |/ / / / / / / /',
-            \'   /_/ |___/_/_/ /_/ /_/ ',
-            \'                         ']
-let g:startify_custom_footer=['', '    This configuration is maintained by Xiao-Ou Zhang <kepbod@gmail.com> and other contributors. Thanks!']
-hi StartifyHeader  ctermfg=111
-hi StartifyFooter  ctermfg=111
-hi StartifyBracket ctermfg=240
-hi StartifyNumber  ctermfg=215
-hi StartifyPath    ctermfg=245
-hi StartifySlash   ctermfg=240
+" Setting for UI plugins
+if count(g:ivim_bundle_groups, 'ui')
 
-" -> delimitMate
-let delimitMate_expand_cr=1
-let delimitMate_expand_space=1
-let delimitMate_balance_matchpairs=1
-
-" -> TComment
-" Map \<Space> to commenting
-function! IsWhiteLine()
-    if (getline('.')=~'^$')
-        exe 'TCommentBlock'
-        normal! j
+    " -> Startify
+    let g:startify_session_dir=$HOME . '/.vim/session'
+    let g:startify_custom_header=[
+                \'       _       _         ',
+                \'      (_)   __(_)___ ___ ',
+                \'     / / | / / / __ `__ \',
+                \'    / /| |/ / / / / / / /',
+                \'   /_/ |___/_/_/ /_/ /_/ ',
+                \'                         ']
+    let g:startify_custom_footer=['', '    This configuration is maintained by Zhang Guangda <zhangxiaoyu9350@gmail.com> and other contributors. Thanks!']
+    if has('gui_running')
+        hi StartifyHeader  guifg=#87afff
+        hi StartifyFooter  guifg=#87afff
+        hi StartifyBracket guifg=#585858
+        hi StartifyNumber  guifg=#ffaf5f
+        hi StartifyPath    guifg=#8a8a8a
+        hi StartifySlash   guifg=#585858
     else
-        normal! A   
-        exe 'TCommentRight'
-        normal! l
-        normal! x
+        hi StartifyHeader  ctermfg=111
+        hi StartifyFooter  ctermfg=111
+        hi StartifyBracket ctermfg=240
+        hi StartifyNumber  ctermfg=215
+        hi StartifyPath    ctermfg=245
+        hi StartifySlash   ctermfg=240
     endif
-    startinsert!
-endfunction
-nnoremap <silent> <LocalLeader><Space> :call IsWhiteLine()<CR>
+    let g:startify_session_autoload       = 1
+    let g:startify_session_persistence    = 1
 
-" -> Multiple cursors
-" Called once right before you start selecting multiple cursors
-function! Multiple_cursors_before()
-    if has('lua')
-        exe 'NeoCompleteLock'
-    else
-        exe 'NeoComplCacheLock'
-    endif
-endfunction
-" Called once only when the multiple selection is canceled (default <Esc>)
-function! Multiple_cursors_after()
-    if has('lua')
-        exe 'NeoCompleteUnlock'
-    else
-        exe 'NeoComplCacheUnlock'
-    endif
-endfunction
+    " -> Goyo & Limelight
+    autocmd! User GoyoEnter Limelight
+    autocmd! User GoyoLeave Limelight!
 
-" -> Easy Align
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
-" -> Investigate.vim
-nnoremap K :call investigate#Investigate()<CR>
-let g:investigate_use_dash=1
-
-" -> EnhancedDiff
-let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-
-" -> Tag bar
-nnoremap <Leader>t :TagbarToggle<CR>
-let g:tagbar_autofocus=1
-let g:tagbar_expand=1
-let g:tagbar_foldlevel=2
-let g:tagbar_autoshowtag=1
-
-" -> NERD Tree
-nnoremap <Leader>f :NERDTreeToggle<CR>
-let NERDTreeChDirMode=2
-let NERDTreeShowBookmarks=1
-let NERDTreeShowHidden=1
-let NERDTreeShowLineNumbers=1
-augroup nerd_loader
-    autocmd!
-    autocmd VimEnter * silent! autocmd! FileExplorer
-    autocmd BufEnter,BufNew *
-                \  if isdirectory(expand('<amatch>'))
-                \|   call plug#load('nerdtree')
-                \|   execute 'autocmd! nerd_loader'
-                \| endif
-augroup END
-
-" -> Neocomplete & Neocomplcache
-" Use Tab and S-Tab to select candidate
-inoremap <expr><Tab>  pumvisible() ? "\<C-N>" : "\<Tab>"
-inoremap <expr><S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
-if has('lua')
-    let g:neocomplete#enable_at_startup=1
-    let g:neocomplete#data_directory=$HOME . '/.vim/cache/neocomplete'
-    let g:neocomplete#enable_auto_delimiter=1
-    " Use <C-E> to close popup
-    inoremap <expr><C-E> neocomplete#cancel_popup()
-    inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
-                \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
-                \ pumvisible() ? neocomplete#close_popup() : "\<CR>"
-else
-    let g:neocomplcache_enable_at_startup=1
-    let g:neocomplcache_temporary_dir=$HOME . '/.vim/cache/neocomplcache'
-    let g:neocomplcache_enable_auto_delimiter=1
-    let g:neocomplcache_enable_fuzzy_completion=1
-    " Use <C-E> to close popup
-    inoremap <expr><C-E> neocomplcache#cancel_popup()
-    inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
-                \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
-                \ pumvisible() ? neocomplcache#close_popup() : "\<CR>"
 endif
-" Setting for specific language
-if has('lua')
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns={}
+
+" Setting for enhancement plugins
+if count(g:ivim_bundle_groups, 'enhance')
+
+    " -> delimitMate
+    let delimitMate_expand_cr=1
+    let delimitMate_expand_space=1
+    let delimitMate_balance_matchpairs=1
+
+    " -> Tcomment
+    " Map \<Space> to commenting
+    function! IsWhiteLine()
+        if (getline('.')=~'^$')
+            exe 'TCommentBlock'
+            normal! j
+        else
+            normal! A
+            exe 'TCommentRight'
+            normal! l
+            normal! x
+        endif
+        startinsert!
+    endfunction
+    nnoremap <silent> <LocalLeader><Space> :call IsWhiteLine()<CR>
+
+    " -> Multiple cursors
+    " Called once right before you start selecting multiple cursors
+
+    " allow maintain cursor after exit
+    let g:multi_cursor_exit_from_insert_mode=0
+
+    " -> Undo tree
+    nnoremap <Leader>u :UndotreeToggle<CR>
+    let g:undotree_SetFocusWhenToggle=1
+
+    " -> Easy Align
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+
+    " -> Splitjoin
+    let g:splitjoin_split_mapping = ',s'
+    let g:splitjoin_join_mapping  = ',j'
+    let g:splitjoin_normalize_whitespace=1
+    let g:splitjoin_align=1
+
+    " -> Investigate.vim
+    " nnoremap K :call investigate#Investigate()<CR>
+    " let g:investigate_use_dash=1
+
+    " -> EnhancedDiff
+    let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
+
+    " shortcut for diffget
+    map <silent> <leader>2 :diffget 2<CR>
+    map <silent> <leader>3 :diffget 3<CR>
+    map <silent> <leader>4 :diffget 4<CR>
+
+    if has('gui_running')
+        set macmeta
     endif
-    let g:neocomplete#force_omni_input_patterns.python=
-    \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-else
-    if !exists('g:neocomplcache_force_omni_patterns')
-        let g:neocomplcache_force_omni_patterns={}
-    endif
-    let g:neocomplcache_force_omni_patterns.python=
-    \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
+    set clipboard=unnamed
+
+    let g:golden_ratio_autocommand = 0
+
+    nnoremap <silent> <Leader>0 :exe "resize " . (winheight(0) * 3/2)<CR>
+    nnoremap <silent> <Leader>9 :exe "resize " . (winheight(0) * 2/3)<CR>
+    nnoremap <silent> + :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
+    nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+
+    nnoremap <silent> <Leader>y :YRShow<CR>
+
+    " set foldmethod=syntax " allow fold code
+
 endif
-autocmd FileType python setlocal omnifunc=jedi#completions
-let g:jedi#completions_enabled=0
-let g:jedi#auto_vim_configuration=0
-let g:jedi#smart_auto_mappings=0
-let g:jedi#use_tabs_not_buffers=1
 
-" -> Neosnippet
-" Use <C-K> to expand or jump snippets in insert mode
-imap <C-K> <Plug>(neosnippet_expand_or_jump)
-" Use <C-K> to replace TARGET within snippets in visual mode
-xmap <C-K> <Plug>(neosnippet_start_unite_snippet_target)
-" For snippet_complete marker
-set conceallevel=2 concealcursor=i
+" setting for moving plugins
+if count(g:ivim_bundle_groups, 'move')
 
-" -> Syntastic
-let g:syntastic_check_on_open=1
-let g:syntastic_aggregate_errors=1
-let g:syntastic_auto_jump=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_style_error_symbol = '✠'
-let g:syntastic_warning_symbol = '∆'
-let g:syntastic_style_warning_symbol = '≈'
+    " -> Tag bar
+    " nnoremap <Leader>t :TagbarToggle<CR>
+    nmap <F8> :TagbarToggle<CR>
+    let g:tagbar_autofocus=1
+    let g:tagbar_expand=1
+    let g:tagbar_foldlevel=2
+    let g:tagbar_autoshowtag=1
 
-" -> Emmet
-let g:user_emmet_leader_key='<C-Z>'
-let g:user_emmet_settings={'indentation':'    '}
-let g:use_emmet_complete_tag=1
+    let g:tagbar_type_css = {
+      \ 'ctagstype' : 'Css',
+      \ 'kinds'     : [
+      \ 'c:classes',
+      \ 's:selectors',
+      \ 'i:identities'
+      \ ]
+    \ }
+
+
+    let g:tagbar_type_rust = {
+        \ 'ctagstype' : 'rust',
+        \ 'kinds' : [
+        \'T:types,type definitions',
+        \'f:functions,function definitions',
+        \'g:enum,enumeration names',
+        \'s:structure names',
+        \'m:modules,module names',
+        \'c:consts,static constants',
+        \'t:traits,traits',
+        \'i:impls,trait implementations',
+        \]
+    \}
+
+    let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+    " Jump to anywhere you want with minimal keystrokes, with just one key binding.
+    " `s{char}{label}`
+    " nmap s <Plug>(easymotion-overwin-f)
+    " or
+    " `s{char}{char}{label}`
+    " Need one more keystroke, but on average, it may be more comfortable.
+    nmap s <Plug>(easymotion-overwin-f2)
+
+    " Turn on case insensitive feature
+    let g:EasyMotion_smartcase = 1
+
+    " Move to line
+    " map <Leader>L <Plug>(easymotion-bd-jk)
+    nmap <Leader>l <Plug>(easymotion-overwin-line)
+
+    " Move to word
+    " map  <Leader>w <Plug>(easymotion-bd-w)
+    nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+    " Matchit
+    " Use Tab instead of % to switch
+    " nmap <Tab> %
+    " vmap <Tab> %
+
+endif
+
+" Setting for navigation plugins
+if count(g:ivim_bundle_groups, 'navigate')
+
+    " -> NERD Tree
+    nnoremap <Leader>d :NERDTreeToggle<CR>
+    nnoremap <Leader>f :NERDTreeFind<CR>
+    let NERDTreeChDirMode=2
+    let NERDTreeShowBookmarks=1
+    let NERDTreeShowHidden=1
+    let NERDTreeShowLineNumbers=1
+    augroup nerd_loader
+        autocmd!
+        autocmd VimEnter * silent! autocmd! FileExplorer
+        autocmd BufEnter,BufNew *
+                    \  if isdirectory(expand('<amatch>'))
+                    \|   call plug#load('nerdtree')
+                    \|   execute 'autocmd! nerd_loader'
+                    \| endif
+    augroup END
+
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux
+    set wildignore+=**/bower_components/**,**/node_modules/**,**/tags
+    let g:ctrlp_custom_ignore = '\v[\/](node_modules|target|dist|tmp|bower_components|coverage)|(\.(swp|ico|git|svn))$'
+    let g:ctrlp_match_window = 'results:25' " overcome limit imposed by max height
+    let g:ctrlp_max_files = 0
+    let g:ctrlp_max_depth = 40
+
+    if executable('ag')
+        " Use ag over grep
+        set grepprg=ag\ --vimgrep
+        " set grepformat=%f:%l:%c:%m,%f:%l:%m
+
+        let g:ackprg = 'ag --vimgrep'
+
+        cnoreabbrev Ack Ack!
+        nnoremap <Leader>a :Ack!<Space>
+
+        nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>
+
+        " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+        let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+        " ag is fast enough that CtrlP doesn't need to cache
+        let g:ctrlp_use_caching = 0
+        " let g:ctrlp_working_path_mode = "ra"
+        let g:ctrlp_working_path_mode = 0
+    endif
+
+endif
+
+" Setting for git plugins
+if count(g:ivim_bundle_groups, 'git')
+endif
+
+" Setting for language specificity
+if count(g:ivim_bundle_groups, 'language')
+
+    " -> Emmet
+    let g:user_emmet_leader_key='<C-E>'
+    let g:user_emmet_settings={'indentation':'    '}
+    let g:use_emmet_complete_tag=1
+
+    " -> rust
+    " let g:rustfmt_autosave = 1
+
+    " -> jsdoc.vim
+    nmap <silent> <C-m> <Plug>(jsdoc)
+    let g:jsdoc_enable_es6=1
+    let g:jsdoc_param_description_separator='-'
+
+    " -> JS beautify
+    function! Beautify()
+        if &filetype == "javascript"
+            call JsBeautify()
+        elseif &filetype == "jsx"
+            call JsxBeautify()
+        elseif &filetype == "html"
+            call HtmlBeautify()
+        elseif &filetype == "css"
+            call CSSBeautify()
+        elseif &filetype == "json"
+            call JsonBeautify()
+        endif
+    endfunction
+    command! -nargs=0 Beautify call Beautify()
+
+    " -> javascript.vim
+    autocmd BufNewFile,BufRead *.es6 set filetype=javascript
+
+endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"--------------------------------------------------
+" => Local Setting
+"--------------------------------------------------
 
 " Use local vimrc if available
 if filereadable(expand($HOME . '/.vimrc.local'))
@@ -543,3 +829,7 @@ if has('gui_running')
         source $HOME/.gvimrc.local
     endif
 endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" vim: set sw=4 sts=4 et fdm=marker:
