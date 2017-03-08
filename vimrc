@@ -981,6 +981,14 @@ if count(g:ivim_bundle_groups, 'compile')
                 \ ' "$(FILE_TITLE)$.html"')
     call SingleCompile#ChooseCompiler('markdown', 'pandoc')
 
+    function! LebabFunc(transform)
+        execute "!lebab --transform=" . a:transform . " % -o %"
+    endfunction
+    command! -nargs=1 LebabWithParam call LebabFunc(<f-args>)
+
+    command! Lebab :!lebab --transform='arrow,for-of,for-each,arg-rest,arg-spread,obj-method,obj-shorthand,no-strict,exponent,multi-var' % -o %
+    command! LebabUnsafe :!lebab --transform='let,class,commonjs,template,default-param,destruct-param,includes' % -o %
+
 endif
 
 " Setting for git plugins
