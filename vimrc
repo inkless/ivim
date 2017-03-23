@@ -253,24 +253,16 @@ if count(g:ivim_bundle_groups, 'git') " Git
 endif
 
 if count(g:ivim_bundle_groups, 'language') " Language Specificity
+    Plug 'sheerun/vim-polyglot' " Language Support (includes javascript and all other types)
     Plug 'Shougo/vimproc.vim', {'do' : 'make'} " vim proc
     Plug 'Quramy/tsuquyomi' " typescript plugin
-    Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
-    Plug 'fatih/vim-go', { 'for': 'go' } " Golang
+    Plug 'davidhalter/jedi-vim', { 'for': 'python'  } " Python jedi plugin
     Plug 'tpope/vim-rails' " Rails
     Plug 'mattn/emmet-vim' " Emmet
-    Plug 'LaTeX-Box-Team/LaTeX-Box' " LaTex
-    Plug 'sheerun/vim-polyglot' " Language Support
     Plug 'heavenshell/vim-jsdoc' " JSDoc for vim
     Plug 'greyblake/vim-preview' " vim preview
-    Plug 'posva/vim-vue' " vue syntax support
-    Plug 'mustache/vim-mustache-handlebars' " Handlebars and mustache
-    Plug 'pangloss/vim-javascript', { 'for': ['javascript', 'javascript.jsx'] } " JavaScript
-    " Plug 'mxw/vim-jsx', { 'for': ['javascript', 'javascript.jsx'] } " JSX
     Plug 'maksimr/vim-jsbeautify' " javascript format
-    Plug 'vim-ruby/vim-ruby' " vim ruby
     Plug 'tpope/vim-bundler' " gem bundler
-    Plug 'rust-lang/rust.vim' " Rust
 endif
 
 if filereadable(expand($HOME . '/.vimrc.bundles.local')) " Load local bundles
