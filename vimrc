@@ -86,6 +86,7 @@ set completeopt-=preview " Optimize auto complete
 
 set backup " Set backup
 set undofile " Set undo
+set backupcopy=yes
 
 " Set directories
 function! InitializeDirectories()
@@ -240,6 +241,7 @@ endif
 if count(g:ivim_bundle_groups, 'compile') " Compiling
     Plug 'scrooloose/syntastic' " Syntax checking
     Plug 'xuhdev/SingleCompile' " Single compile
+    Plug 'mtscout6/syntastic-local-eslint.vim' " local eslint
 endif
 
 if count(g:ivim_bundle_groups, 'git') " Git
@@ -474,12 +476,12 @@ if has('gui_running')
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono\ 14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono\ 12
         " set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono\ 12
-        set guifont=SauceCodePro\ Nerd\ Font\ Medium\ 11
+        set guifont=SauceCodePro\ Nerd\ Font\ Medium\ 12
     else
         " set guifont=Inconsolata\ for\ Powerline\ Nerd\ Font\ Complete\ Mono:h14
         " set guifont=Sauce\ Code\ Pro\ Light\ Nerd\ Font\ Complete\ Mono:h12
         " set guifont=Sauce\ Code\ Pro\ ExtraLight\ Nerd\ Font\ Complete\ Mono:h12
-        set guifont=SauceCodePro\ Nerd\ Font\ Medium:h11
+        set guifont=SauceCodePro\ Nerd\ Font\ Medium:h12
     endif
     set linespace=2
 endif
@@ -741,7 +743,7 @@ if count(g:ivim_bundle_groups, 'enhance')
     "     set macmeta
     " endif
 
-    set clipboard=unnamed
+    set clipboard=unnamedplus
 
     let g:golden_ratio_autocommand = 0
 
