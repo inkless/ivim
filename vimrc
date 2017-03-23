@@ -240,7 +240,6 @@ endif
 if count(g:ivim_bundle_groups, 'compile') " Compiling
     Plug 'scrooloose/syntastic' " Syntax checking
     Plug 'xuhdev/SingleCompile' " Single compile
-    Plug 'inkless/syntastic-local-eslint.vim' " local eslint
 endif
 
 if count(g:ivim_bundle_groups, 'git') " Git
