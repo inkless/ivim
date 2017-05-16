@@ -558,6 +558,9 @@ function! MyFoldText()
 endfunction
 set foldtext=MyFoldText()
 
+set foldmethod=syntax
+set nofoldenable
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "-------------------------------------------------
@@ -610,6 +613,7 @@ nnoremap <leader>b :ls<cr>:b<space>
 " new tab
 nnoremap <leader>t :tabnew<cr>:Startify<cr>
 
+set pastetoggle=<F10>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -741,8 +745,6 @@ if count(g:ivim_bundle_groups, 'enhance')
     nnoremap <silent> - :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 
     nnoremap <silent> <Leader>y :YRShow<CR>
-
-    " set foldmethod=syntax " allow fold code
 
 endif
 
