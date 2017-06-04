@@ -1004,8 +1004,8 @@ if count(g:ivim_bundle_groups, 'compile')
     let g:ale_echo_msg_error_str = 'E'
     let g:ale_echo_msg_warning_str = 'W'
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-    nmap <silent> <C-j> <Plug>(ale_next_wrap)
+    " nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+    " nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
@@ -1053,7 +1053,7 @@ if count(g:ivim_bundle_groups, 'language')
     function! Beautify()
         if &filetype == "javascript"
             call JsBeautify()
-        elseif &filetype == "jsx"
+        elseif &filetype == "javascript.jsx"
             call JsxBeautify()
         elseif &filetype == "html"
             call HtmlBeautify()
@@ -1065,7 +1065,11 @@ if count(g:ivim_bundle_groups, 'language')
     endfunction
     command! -nargs=0 Beautify call Beautify()
 
+    " -> vim.jsx
+    " let g:jsx_ext_required = 1
+
     " -> javascript.vim
+    let g:javascript_plugin_jsdoc = 1
     autocmd BufNewFile,BufRead *.es6 set filetype=javascript
 
 endif
