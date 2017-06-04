@@ -238,7 +238,8 @@ if count(g:ivim_bundle_groups, 'complete') " Completion
 endif
 
 if count(g:ivim_bundle_groups, 'compile') " Compiling
-    Plug 'scrooloose/syntastic' " Syntax checking
+    " Plug 'scrooloose/syntastic' " Syntax checking
+    Plug 'w0rp/ale' " Async syntax checking
     Plug 'xuhdev/SingleCompile' " Single compile
 endif
 
@@ -979,23 +980,32 @@ endif
 " Setting for compiling plugins
 if count(g:ivim_bundle_groups, 'compile')
 
-    " -> Syntastic
-    let g:syntastic_check_on_open=0
-    let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['html', 'hbs', 'scss'] }
-    let g:syntastic_aggregate_errors=1
-    let g:syntastic_auto_jump=1
-    let g:syntastic_auto_loc_list=1
-    if g:ivim_fancy_font
-        let g:syntastic_error_symbol = '✗'
-        let g:syntastic_style_error_symbol = '✠'
-        let g:syntastic_warning_symbol = '∆'
-        let g:syntastic_style_warning_symbol = '≈'
-    endif
+    " " -> Syntastic
+    " let g:syntastic_check_on_open=0
+    " let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [],'passive_filetypes': ['html', 'hbs', 'scss'] }
+    " let g:syntastic_aggregate_errors=1
+    " let g:syntastic_auto_jump=1
+    " let g:syntastic_auto_loc_list=1
+    " if g:ivim_fancy_font
+    "     let g:syntastic_error_symbol = '✗'
+    "     let g:syntastic_style_error_symbol = '✠'
+    "     let g:syntastic_warning_symbol = '∆'
+    "     let g:syntastic_style_warning_symbol = '≈'
+    " endif
+    "
+    " " let g:syntastic_javascript_checkers = ['flowplusjshint']
+    " let g:syntastic_javascript_checkers = ['eslint']
+    " let g:tsuquyomi_disable_quickfix = 1
+    " let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
 
-    " let g:syntastic_javascript_checkers = ['flowplusjshint']
-    let g:syntastic_javascript_checkers = ['eslint']
-    let g:tsuquyomi_disable_quickfix = 1
-    let g:syntastic_typescript_checkers = ['tslint', 'tsuquyomi']
+    " -> Ale
+    let g:ale_sign_error = '✗'
+    let g:ale_sign_warning = '∆'
+    let g:ale_echo_msg_error_str = 'E'
+    let g:ale_echo_msg_warning_str = 'W'
+    let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+    nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+    nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
