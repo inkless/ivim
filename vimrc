@@ -44,7 +44,7 @@ let g:ivim_default_scheme='OceanicNext'
 let g:ivim_fancy_font=1 " Enable using fancy font
 let g:ivim_show_number=1 " Enable showing number
 " ivim autocomplete setting (YCM or NEO)
-let g:ivim_autocomplete='YCM'
+" let g:ivim_autocomplete='YCM'
 " ivim plugin setting
 let g:ivim_bundle_groups=['ui', 'enhance', 'move', 'navigate',
             \'complete', 'compile', 'git', 'language']
@@ -198,6 +198,7 @@ if count(g:ivim_bundle_groups, 'enhance') " Vim enhancement
     Plug 'amiorin/vim-project' " Project
     Plug 'ap/vim-css-color', { 'for': ['css', 'less', 'scss', 'vim'] } " hmm
     Plug 'KabbAmine/vCoolor.vim' " Color Picker
+    Plug 'godlygeek/tabular' " Vim script for text filtering and alignment
 endif
 
 if count(g:ivim_bundle_groups, 'move') " Moving
@@ -217,25 +218,26 @@ if count(g:ivim_bundle_groups, 'navigate') " Navigation
 endif
 
 if count(g:ivim_bundle_groups, 'complete') " Completion
-    if g:ivim_autocomplete=='NEO'
-        if has('lua')
-            let g:ivim_completion_engine='neocomplete'
-            Plug 'Shougo/neocomplete.vim' " Auto completion framework
-        else
-            let g:ivim_completion_engine='neocomplcache'
-            Plug 'Shougo/neocomplcache.vim' " Auto completion framework
-        endif
-        Plug 'Shougo/neosnippet.vim' " Snippet engine
-        Plug 'Shougo/neosnippet-snippets' " Snippets
-        Plug 'Shougo/vimproc.vim', { 'do': 'make' }
-    else
-        " Auto completion framework
-        let g:ivim_completion_engine='YouCompleteMe'
-        " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' } "Auto completion framework
-        Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer --racer-completer --clang-completer' } "Auto completion framework
-        Plug 'honza/vim-snippets' " Snippets
-        Plug 'sirver/ultisnips' " Snippet engine
-    endif
+    " if g:ivim_autocomplete=='NEO'
+    "     if has('lua')
+    "         let g:ivim_completion_engine='neocomplete'
+    "         Plug 'Shougo/neocomplete.vim' " Auto completion framework
+    "     else
+    "         let g:ivim_completion_engine='neocomplcache'
+    "         Plug 'Shougo/neocomplcache.vim' " Auto completion framework
+    "     endif
+    "     Plug 'Shougo/neosnippet.vim' " Snippet engine
+    "     Plug 'Shougo/neosnippet-snippets' " Snippets
+    "     Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+    " else
+    "     " Auto completion framework
+    "     let g:ivim_completion_engine='YouCompleteMe'
+    "     " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' } "Auto completion framework
+    "     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer --racer-completer --clang-completer' } "Auto completion framework
+    "     Plug 'honza/vim-snippets' " Snippets
+    "     Plug 'sirver/ultisnips' " Snippet engine
+    " endif
+    Plug 'inkless/completor.vim', { 'do': 'make js' }
 endif
 
 if count(g:ivim_bundle_groups, 'compile') " Compiling
@@ -722,23 +724,23 @@ if count(g:ivim_bundle_groups, 'enhance')
 
     " -> Multiple cursors
     " Called once right before you start selecting multiple cursors
-    if g:ivim_autocomplete=='NEO'
-        function! Multiple_cursors_before()
-            if g:ivim_completion_engine=='neocomplete'
-                exe 'NeoCompleteLock'
-            else
-                exe 'NeoComplCacheLock'
-            endif
-        endfunction
-        " Called once only when the multiple selection is canceled (default <Esc>)
-        function! Multiple_cursors_after()
-            if g:ivim_completion_engine=='neocomplete'
-                exe 'NeoCompleteUnlock'
-            else
-                exe 'NeoComplCacheUnlock'
-            endif
-        endfunction
-    endif
+    " if g:ivim_autocomplete=='NEO'
+    "     function! Multiple_cursors_before()
+    "         if g:ivim_completion_engine=='neocomplete'
+    "             exe 'NeoCompleteLock'
+    "         else
+    "             exe 'NeoComplCacheLock'
+    "         endif
+    "     endfunction
+    "     " Called once only when the multiple selection is canceled (default <Esc>)
+    "     function! Multiple_cursors_after()
+    "         if g:ivim_completion_engine=='neocomplete'
+    "             exe 'NeoCompleteUnlock'
+    "         else
+    "             exe 'NeoComplCacheUnlock'
+    "         endif
+    "     endfunction
+    " endif
 
     " allow maintain cursor after exit
     let g:multi_cursor_exit_from_insert_mode=0
@@ -899,75 +901,79 @@ endif
 " Setting for completion plugins
 if count(g:ivim_bundle_groups, 'complete')
 
-    if g:ivim_autocomplete=='NEO'
-        " -> Neocomplete & Neocomplcache
-        " Use Tab and S-Tab to select candidate
-        inoremap <expr><Tab>  pumvisible() ? "\<C-N>" : "\<Tab>"
-        inoremap <expr><S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
-        if g:ivim_completion_engine=='neocomplete'
-            let g:neocomplete#enable_at_startup=1
-            let g:neocomplete#data_directory=$HOME . '/.vim/cache/neocomplete'
-            let g:neocomplete#enable_auto_delimiter=1
-            " Use <C-E> to close popup
-            inoremap <expr><C-E> neocomplete#cancel_popup()
-            inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
-                        \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
-                        \ pumvisible() ? neocomplete#close_popup() : "\<CR>"
-        else
-            let g:neocomplcache_enable_at_startup=1
-            let g:neocomplcache_temporary_dir=$HOME . '/.vim/cache/neocomplcache'
-            let g:neocomplcache_enable_auto_delimiter=1
-            let g:neocomplcache_enable_fuzzy_completion=1
-            " Use <C-E> to close popup
-            inoremap <expr><C-E> neocomplcache#cancel_popup()
-            inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
-                        \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
-                        \ pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-        endif
-        " Setting for specific language
-        if has('lua')
-            if !exists('g:neocomplete#force_omni_input_patterns')
-                let g:neocomplete#force_omni_input_patterns={}
-            endif
-            let g:neocomplete#force_omni_input_patterns.python=
-            \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-        else
-            if !exists('g:neocomplcache_force_omni_patterns')
-                let g:neocomplcache_force_omni_patterns={}
-            endif
-            let g:neocomplcache_force_omni_patterns.python=
-            \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
-        endif
-        autocmd FileType python setlocal omnifunc=jedi#completions
-        let g:jedi#completions_enabled=0
-        let g:jedi#auto_vim_configuration=0
-        let g:jedi#smart_auto_mappings=0
-        let g:jedi#use_tabs_not_buffers=1
-        " -> Neosnippet
-        " Set information for snippets
-        let g:neosnippet#enable_snipmate_compatibility=1
-        " Use <C-K> to expand or jump snippets in insert mode
-        imap <C-K> <Plug>(neosnippet_expand_or_jump)
-        " Use <C-K> to replace TARGET within snippets in visual mode
-        xmap <C-K> <Plug>(neosnippet_start_unite_snippet_target)
-        " For snippet_complete marker
-        if has('conceal')
-            set conceallevel=2 concealcursor=i
-        endif
-    else
-        " -> rustc
-        let g:ycm_rust_src_path = '/usr/local/lib/rust/rustc-1.9.0/src'
-        " -> python
-        let g:ycm_python_binary_path = 'python'
-        let g:ycm_server_python_interpreter = '/usr/bin/python'
+    " if g:ivim_autocomplete=='NEO'
+    "     " -> Neocomplete & Neocomplcache
+    "     " Use Tab and S-Tab to select candidate
+    "     inoremap <expr><Tab>  pumvisible() ? "\<C-N>" : "\<Tab>"
+    "     inoremap <expr><S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
+    "     if g:ivim_completion_engine=='neocomplete'
+    "         let g:neocomplete#enable_at_startup=1
+    "         let g:neocomplete#data_directory=$HOME . '/.vim/cache/neocomplete'
+    "         let g:neocomplete#enable_auto_delimiter=1
+    "         " Use <C-E> to close popup
+    "         inoremap <expr><C-E> neocomplete#cancel_popup()
+    "         inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
+    "                     \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
+    "                     \ pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    "     else
+    "         let g:neocomplcache_enable_at_startup=1
+    "         let g:neocomplcache_temporary_dir=$HOME . '/.vim/cache/neocomplcache'
+    "         let g:neocomplcache_enable_auto_delimiter=1
+    "         let g:neocomplcache_enable_fuzzy_completion=1
+    "         " Use <C-E> to close popup
+    "         inoremap <expr><C-E> neocomplcache#cancel_popup()
+    "         inoremap <expr><CR> delimitMate#WithinEmptyPair() ?
+    "                     \ "\<C-R>=delimitMate#ExpandReturn()\<CR>" :
+    "                     \ pumvisible() ? neocomplcache#close_popup() : "\<CR>"
+    "     endif
+    "     " Setting for specific language
+    "     if has('lua')
+    "         if !exists('g:neocomplete#force_omni_input_patterns')
+    "             let g:neocomplete#force_omni_input_patterns={}
+    "         endif
+    "         let g:neocomplete#force_omni_input_patterns.python=
+    "         \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+    "     else
+    "         if !exists('g:neocomplcache_force_omni_patterns')
+    "             let g:neocomplcache_force_omni_patterns={}
+    "         endif
+    "         let g:neocomplcache_force_omni_patterns.python=
+    "         \ '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+    "     endif
+    "     autocmd FileType python setlocal omnifunc=jedi#completions
+    "     let g:jedi#completions_enabled=0
+    "     let g:jedi#auto_vim_configuration=0
+    "     let g:jedi#smart_auto_mappings=0
+    "     let g:jedi#use_tabs_not_buffers=1
+    "     " -> Neosnippet
+    "     " Set information for snippets
+    "     let g:neosnippet#enable_snipmate_compatibility=1
+    "     " Use <C-K> to expand or jump snippets in insert mode
+    "     imap <C-K> <Plug>(neosnippet_expand_or_jump)
+    "     " Use <C-K> to replace TARGET within snippets in visual mode
+    "     xmap <C-K> <Plug>(neosnippet_start_unite_snippet_target)
+    "     " For snippet_complete marker
+    "     if has('conceal')
+    "         set conceallevel=2 concealcursor=i
+    "     endif
+    " else
+    "     " -> rustc
+    "     let g:ycm_rust_src_path = '/usr/local/lib/rust/rustc-1.9.0/src'
+    "     " -> python
+    "     let g:ycm_python_binary_path = 'python'
+    "
+    "     " -> UltiSnips
+    "     let g:UltiSnipsExpandTrigger="<C-K>"
+    "     let g:UltiSnipsJumpForwardTrigger="<Tab>"
+    "     let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
+    "
+    "     nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    " endif
 
-        " -> UltiSnips
-        let g:UltiSnipsExpandTrigger="<C-K>"
-        let g:UltiSnipsJumpForwardTrigger="<Tab>"
-        let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
-
-        nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
-    endif
+    " Use Tab to select completion
+    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
 
     " Setting info for snips
     let g:snips_author=g:ivim_user
@@ -1006,6 +1012,10 @@ if count(g:ivim_bundle_groups, 'compile')
     let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
     " nmap <silent> <C-k> <Plug>(ale_previous_wrap)
     " nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+    let g:ale_linters = {
+    \   'javascript': ['eslint']
+    \}
 
     " -> Singlecompile
     nnoremap <Leader>r :SingleCompileRun<CR>
