@@ -236,7 +236,7 @@ if count(g:ivim_bundle_groups, 'complete') " Completion
     "     Plug 'honza/vim-snippets' " Snippets
     "     Plug 'sirver/ultisnips' " Snippet engine
     " endif
-    Plug 'inkless/completor.vim'
+    Plug 'inkless/completor.vim', { 'do': 'make js' }
 endif
 
 if count(g:ivim_bundle_groups, 'compile') " Compiling
