@@ -231,12 +231,12 @@ if count(g:ivim_bundle_groups, 'complete') " Completion
     " else
     "     " Auto completion framework
     "     let g:ivim_completion_engine='YouCompleteMe'
-    "     " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' } "Auto completion framework
-    "     Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer --racer-completer --clang-completer' } "Auto completion framework
+        " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --all' } "Auto completion framework
+    Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer --racer-completer' } "Auto completion framework
     "     Plug 'honza/vim-snippets' " Snippets
     "     Plug 'sirver/ultisnips' " Snippet engine
     " endif
-    Plug 'inkless/completor.vim', { 'do': 'make js' }
+    " Plug 'inkless/completor.vim', { 'do': 'make js' }
 endif
 
 if count(g:ivim_bundle_groups, 'compile') " Compiling
@@ -256,7 +256,7 @@ endif
 if count(g:ivim_bundle_groups, 'language') " Language Specificity
     Plug 'sheerun/vim-polyglot' " Language Support (includes javascript and all other types)
     Plug 'Shougo/vimproc.vim', {'do' : 'make'} " vim proc
-    Plug 'Quramy/tsuquyomi' " typescript plugin
+    " Plug 'Quramy/tsuquyomi' " typescript plugin
     Plug 'davidhalter/jedi-vim', { 'for': 'python' } " Python jedi plugin
     Plug 'tpope/vim-rails' " Rails
     Plug 'mattn/emmet-vim' " Emmet
@@ -960,21 +960,25 @@ if count(g:ivim_bundle_groups, 'complete')
     " else
     "     " -> rustc
     "     let g:ycm_rust_src_path = '/usr/local/lib/rust/rustc-1.9.0/src'
-    "     " -> python
-    "     let g:ycm_python_binary_path = 'python'
+    " -> python
+    let g:ycm_python_binary_path = 'python'
+    " let g:ycm_semantic_triggers['typescript'] = ['(?:\w{2,}\w*|\.\w*)$']
     "
     "     " -> UltiSnips
     "     let g:UltiSnipsExpandTrigger="<C-K>"
     "     let g:UltiSnipsJumpForwardTrigger="<Tab>"
     "     let g:UltiSnipsJumpBackwardTrigger="<S-Tab>"
     "
-    "     nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
+    nnoremap <leader>jd :YcmCompleter GoToDefinition<CR>
     " endif
 
     " Use Tab to select completion
-    inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-    inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+    " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+    " inoremap <expr> <cr> pumvisible() ? "\<C-y>\<cr>" : "\<cr>"
+
+    " let g:tsuquyomi_completion_detail = 1
+    " let g:completor_typescript_omni_trigger = '(?:\w{2,}\w*|\.\w*)$'
 
     " Setting info for snips
     let g:snips_author=g:ivim_user
